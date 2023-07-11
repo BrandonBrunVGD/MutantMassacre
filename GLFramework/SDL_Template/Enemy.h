@@ -18,9 +18,11 @@ private:
 	bool mVisible;
 	bool mAnimating;
 	int mHp;
+	int mMaxHp;
 
 	float mSpeed;
-
+	int mMoveSwitch;
+	bool mEnraged;
 
 protected:
 
@@ -41,6 +43,6 @@ public:
 	void Visible(bool visible);
 
 	bool GetHp() { return mHp; }
-
+	void HandleMovement();
 };
 #endif

@@ -21,45 +21,97 @@ void Gun::HandleFiring() {
 
 void Gun::EnemyFiring() {
 	if (mTag == "enemy gun") {
-		ShootPattern1();
+
+		switch (mShootPatterns)	{
+		case 1:
+			mEnemyFireTimer -= 1 * mTimer->DeltaTime(); 
+			if (mEnemyFireTimer <= 0) { mEnemyFireTimer = 60; ShootPattern1(); mShootPatterns = 2; }
+			
+			break;
+		case 2:
+			mEnemyFireTimer -= 1 * mTimer->DeltaTime();
+			if (mEnemyFireTimer <= 0) { mEnemyFireTimer = 60; ShootPattern2(); mShootPatterns = 1; }
+			
+			break;
+		default:
+			break;
+		}		
 	}
 }
 
 void Gun::ShootPattern1() {
-	Bullet* bullet1 = new Bullet(Position(), Vector2(0, 0), true);
-	bullet1->SetTag("eBullet");
-	mEBullets.push_back(bullet1);
+	Bullet* bullet1_1 = new Bullet(Position(), Vector2(0, 0), false);
+	bullet1_1->SetTag("eBullet");
+	mEBullets.push_back(bullet1_1);
 
-	Bullet* bullet2 = new Bullet(Position(), Vector2(1920/2, 0), true);
-	bullet2->SetTag("eBullet");
-	mEBullets.push_back(bullet2);
+	Bullet* bullet1_2 = new Bullet(Position(), Vector2(1920/2, 0), false);
+	bullet1_2->SetTag("eBullet");
+	mEBullets.push_back(bullet1_2);
 
-	Bullet* bullet3 = new Bullet(Position(), Vector2(1920, 0), true);
-	bullet3->SetTag("eBullet");
-	mEBullets.push_back(bullet3);
+	Bullet* bullet1_3 = new Bullet(Position(), Vector2(1920, 0), false);
+	bullet1_3->SetTag("eBullet");
+	mEBullets.push_back(bullet1_3);
 
-	Bullet* bullet4 = new Bullet(Position(), Vector2(0, 1080/2), true);
-	bullet4->SetTag("eBullet");
-	mEBullets.push_back(bullet4);
+	Bullet* bullet1_4 = new Bullet(Position(), Vector2(0, 1080/2), false);
+	bullet1_4->SetTag("eBullet");
+	mEBullets.push_back(bullet1_4);
 
-	Bullet* bullet5 = new Bullet(Position(), Vector2(1920, 1080/2), true);
-	bullet5->SetTag("eBullet");
-	mEBullets.push_back(bullet5);
+	Bullet* bullet1_5 = new Bullet(Position(), Vector2(1920, 1080/2), false);
+	bullet1_5->SetTag("eBullet");
+	mEBullets.push_back(bullet1_5);
 
-	Bullet* bullet6 = new Bullet(Position(), Vector2(0, 1080), true);
-	bullet6->SetTag("eBullet");
-	mEBullets.push_back(bullet6);
+	Bullet* bullet1_6 = new Bullet(Position(), Vector2(0, 1080), false);
+	bullet1_6->SetTag("eBullet");
+	mEBullets.push_back(bullet1_6);
 
-	Bullet* bullet7 = new Bullet(Position(), Vector2(1920/2, 1080), true);
-	bullet7->SetTag("eBullet");
-	mEBullets.push_back(bullet7);
+	Bullet* bullet1_7 = new Bullet(Position(), Vector2(1920/2, 1080), false);
+	bullet1_7->SetTag("eBullet");
+	mEBullets.push_back(bullet1_7);
 
-	Bullet* bullet8 = new Bullet(Position(), Vector2(1920, 1080), true);
-	bullet8->SetTag("eBullet");
-	mEBullets.push_back(bullet8);
+	Bullet* bullet1_8 = new Bullet(Position(), Vector2(1920, 1080), false);
+	bullet1_8->SetTag("eBullet");
+	mEBullets.push_back(bullet1_8);
 }
 void Gun::ShootPattern2() {
+	Bullet* bullet2_1 = new Bullet(Position(), Vector2(480, 0), false);
+	bullet2_1->SetTag("eBullet");
+	mEBullets.push_back(bullet2_1);
 
+	Bullet* bullet2_2 = new Bullet(Position(), Vector2(1440, 0), false);
+	bullet2_2->SetTag("eBullet");
+	mEBullets.push_back(bullet2_2);
+
+	Bullet* bullet2_3 = new Bullet(Position(), Vector2(0, 270), false);
+	bullet2_3->SetTag("eBullet");
+	mEBullets.push_back(bullet2_3);
+
+	Bullet* bullet2_4 = new Bullet(Position(), Vector2(1920, 270), false);
+	bullet2_4->SetTag("eBullet");
+	mEBullets.push_back(bullet2_4);
+
+	Bullet* bullet2_5 = new Bullet(Position(), Vector2(0, 810), false);
+	bullet2_5->SetTag("eBullet");
+	mEBullets.push_back(bullet2_5);
+
+	Bullet* bullet2_6 = new Bullet(Position(), Vector2(1920, 810), false);
+	bullet2_6->SetTag("eBullet");
+	mEBullets.push_back(bullet2_6);
+
+	Bullet* bullet2_7 = new Bullet(Position(), Vector2(480, 1080), false);
+	bullet2_7->SetTag("eBullet");
+	mEBullets.push_back(bullet2_7);
+
+	Bullet* bullet2_8 = new Bullet(Position(), Vector2(1440, 1080), false);
+	bullet2_8->SetTag("eBullet");
+	mEBullets.push_back(bullet2_8);
+
+	Bullet* bullet2_9 = new Bullet(Position(), Vector2(1920 / 2, 0), false);
+	bullet2_9->SetTag("eBullet");
+	mEBullets.push_back(bullet2_9);
+
+	Bullet* bullet2_10 = new Bullet(Position(), Vector2(1920/2, 1080), false);
+	bullet2_10->SetTag("eBullet");
+	mEBullets.push_back(bullet2_10);
 }
 
 Gun::Gun() {
@@ -85,6 +137,7 @@ Gun::Gun() {
 	mTargetPos = Vec2_Zero;
 
 	mEnemyFireTimer = 60;
+	mShootPatterns = 1;
 
 	AddCollider(new BoxCollider(Vector2(16.0f, 67.0f)));
 
@@ -125,15 +178,13 @@ bool Gun::IgnoreCollisions()
 
 void Gun::Update() {
 
-	mEnemyFireTimer -= 1 * mTimer->DeltaTime();
-	if (mEnemyFireTimer <= 0) { mEnemyFireTimer = 60; EnemyFiring(); }
-
 	if (mAnimating) {
 
 	}
 	else {
 		if (Active()) {
 			HandleFiring();
+			EnemyFiring();
 		}
 	}
 
@@ -163,6 +214,26 @@ void Gun::Update() {
 			it = mEBullets.erase(it);
 			std::cout << "bullet deleted" << std::endl;
 		}
+		else if ((*it)->Position().y < -OFFSCREEN_BUFFER) {
+			mDelEBullets.push_back(*it);
+			it = mEBullets.erase(it);
+			std::cout << "bullet deleted" << std::endl;
+		}
+		else if ((*it)->Position().y > 1080 + OFFSCREEN_BUFFER) {
+			mDelEBullets.push_back(*it);
+			it = mEBullets.erase(it);
+			std::cout << "bullet deleted" << std::endl;
+		}
+		else if ((*it)->Position().x < -OFFSCREEN_BUFFER) {
+			mDelEBullets.push_back(*it);
+			it = mEBullets.erase(it);
+			std::cout << "bullet deleted" << std::endl;
+		}
+		else if ((*it)->Position().x > 1920 + OFFSCREEN_BUFFER) {
+			mDelEBullets.push_back(*it);
+			it = mEBullets.erase(it);
+			std::cout << "bullet deleted" << std::endl;
+		}
 		else {
 			++it;
 		}
@@ -183,19 +254,8 @@ void Gun::Update() {
 	Position(pos);
 
 	//Vector2 pos = Position();
-	if (pos.y < -OFFSCREEN_BUFFER) {
 
-	}
-	else if (pos.y > 1080 + OFFSCREEN_BUFFER) {
-
-	}
-
-	if (pos.x < -OFFSCREEN_BUFFER) {
-
-	}
-	else if (pos.x > 1920 + OFFSCREEN_BUFFER) {
-
-	}
+	
 }
 
 void Gun::Render() {

@@ -32,6 +32,7 @@ private:
 	Vector2 mTargetPos;
 
 	int mEnemyFireTimer;
+	int mShootPatterns; //switch
 
 	static const int MAX_BULLETS = 200;
 	std::vector<Bullet*> mPBullets;

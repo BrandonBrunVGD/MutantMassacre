@@ -6,8 +6,11 @@ Enemy::Enemy() {
 	mVisible = false;
 	mAnimating = false;
 
+	mMaxHp = 10;
 	mHp = 10;
-	mSpeed = 500;
+	mSpeed = 250;
+	mMoveSwitch = 0;
+	mEnraged = false;
 
 	mTexture = new GLTexture("Tarantu-Crab.png");
 	mTexture->Parent(this);
@@ -57,6 +60,7 @@ void Enemy::Update() {
 	std::cout << mHp << std::endl;
 	mEGun->Update();
 	
+	HandleMovement();
 }
 
 void Enemy::Render() {
@@ -69,5 +73,30 @@ void Enemy::Render() {
 
 void Enemy::Visible(bool visible) {
 	mVisible = visible;
+}
+
+void Enemy::HandleMovement() {
+	if (mHp <= mMaxHp / 2) { mEnraged = true; }
+	
+	if (mEnraged == true) { mSpeed = mSpeed * 2; }
+	
+	switch (mMoveSwitch) {
+	case 0:
+		Translate(-Vec2_Right * mSpeed * mTimer->DeltaTime(), World);
+		break;
+	case 1:
+		Translate(Vec2_Right * mSpeed * mTimer->DeltaTime(), World);
+		break;
+	default:
+		Translate(Vec2_Right * mSpeed * mTimer->DeltaTime(), World);
+		break;
+	}
+
+	if (Position().x >= Graphics::SCREEN_WIDTH * 0.5f + 200) {
+		mMoveSwitch = 0;
+	}
+	else if (Position().x <= Graphics::SCREEN_WIDTH * 0.5f - 200) {
+		mMoveSwitch = 1;
+	}
 }
 

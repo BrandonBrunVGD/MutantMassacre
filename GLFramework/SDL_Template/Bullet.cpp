@@ -29,8 +29,10 @@ Bullet::Bullet(Vector2 spawnpoint, Vector2 target, bool friendly) {
 		mTarget = target;
 	}
 	else {
-		mId = PhysicsManager::Instance()->RegisterEntity(this, PhysicsManager::CollisionLayers::HostileProjectiles);
+		mId = PhysicsManager::Instance()->RegisterEntity(this, PhysicsManager::CollisionLayers::Hostile);
 		
+		mSpawn = spawnpoint;
+		mTarget = target;
 	}
 
 	Position(mSpawn);
@@ -53,7 +55,7 @@ void Bullet::Hit(PhysEntity * other) {
 		std::cout << "hit" << std::endl;
 	}
 	else if (mTag == "eBullet" && other->GetTag() == "player") {
-		mWasHit = false;
+		mWasHit = true;
 		std::cout << "hit" << std::endl;
 	}
 	

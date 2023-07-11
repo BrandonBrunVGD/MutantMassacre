@@ -110,6 +110,12 @@ void PlayScreen::Update() {
 	}
 
 	mGun->SetTargetPos(mPlayer->Position());
+
+	std::cout << "x" << mTarantuCrab->Position().x << " y" << mTarantuCrab->Position().y << std::endl;
+	
+	//mTarantuCrab->Translate(Vec2_Right * mTarantuCrabSpeed * mTimer->DeltaTime(), World);
+
+	
 }
 
 void PlayScreen::Render() {

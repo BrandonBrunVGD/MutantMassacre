@@ -117,6 +117,10 @@ void Player::Hit(PhysEntity* other) {
 		mHp -= 1;		
 		mWasHit = true;
 	}
+	else if (other->GetTag() == "eBullet") {
+		mHp -= 100;
+		mWasHit = true;
+	}
 }
 
 bool Player::WasHit() {
@@ -135,6 +139,7 @@ void Player::Update() {
 	}
 	else {
 		if (Active()) {
+			std::cout << mHp << std::endl;
 			HandleMovement();
 		}
 	}

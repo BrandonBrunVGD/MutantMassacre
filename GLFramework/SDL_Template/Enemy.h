@@ -13,6 +13,7 @@ private:
 	Timer* mTimer;
 
 	Texture* mTexture;
+	Texture* mEyeLids;
 	Gun* mEGun;
 
 	bool mVisible;
@@ -22,7 +23,9 @@ private:
 
 	float mSpeed;
 	int mMoveSwitch;
-	bool mEnraged;
+	bool mEnragedMods;
+	bool mEnragedState;
+	bool mSleepState;
 
 protected:
 

@@ -20,7 +20,7 @@ void Gun::HandleFiring() {
 }
 
 void Gun::EnemyFiring() {
-	if (mTag == "enemy gun") {
+	if (mTag == "enemy gun" && mCanShoot) {
 
 		switch (mShootPatterns)	{
 		case 1:

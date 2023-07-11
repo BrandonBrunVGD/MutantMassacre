@@ -33,7 +33,6 @@ PlayScreen::PlayScreen() {
 	mGun->Active(true);
 	mGun->SetTag("player gun");
 
-	//delete mTarantuCrab;
 	delete mTarantuCrab;
 	mTarantuCrab = new Enemy();
 	mTarantuCrab->Parent(this);
@@ -111,11 +110,6 @@ void PlayScreen::Update() {
 
 	mGun->SetTargetPos(mPlayer->Position());
 
-	std::cout << "x" << mTarantuCrab->Position().x << " y" << mTarantuCrab->Position().y << std::endl;
-	
-	//mTarantuCrab->Translate(Vec2_Right * mTarantuCrabSpeed * mTimer->DeltaTime(), World);
-
-	
 }
 
 void PlayScreen::Render() {

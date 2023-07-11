@@ -10,12 +10,19 @@ Enemy::Enemy() {
 	mHp = 10;
 	mSpeed = 250;
 	mMoveSwitch = 0;
-	mEnraged = false;
+	mEnragedState = false;
+	mEnragedMods = false;
+	mSleepState = true;
 
 	mTexture = new GLTexture("Tarantu-Crab.png");
 	mTexture->Parent(this);
 	mTexture->Position(Vec2_Zero);
 	mTexture->Scale(Vector2(0.750f, 0.750f));
+
+	mEyeLids = new GLTexture("Tarantu-Crab EyeLids.png");
+	mEyeLids->Parent(this);
+	mEyeLids->Position(Vector2(0.0f, -50.0f));
+	mEyeLids->Scale(Vector2(0.750f, 0.750f));
 
 	delete mEGun;
 	mEGun = new Gun();
@@ -39,6 +46,9 @@ Enemy::~Enemy() {
 	delete mTexture;
 	mTexture = nullptr;
 
+	delete mEyeLids;
+	mEyeLids = nullptr;
+
 	delete mEGun;
 	mEGun = nullptr;
 }
@@ -51,21 +61,28 @@ bool Enemy::IgnoreCollisions()
 void Enemy::Hit(PhysEntity* other) {
 	if (other->GetTag() == "pBullet") {
 		mHp -= 1;
+		mSleepState = false;
 	}
 }
 
 void Enemy::Update() {
+	if (mSleepState == true) { mEGun->CanShoot(false); mSpeed = 0; }
+	else { mEGun->CanShoot(true); mSpeed = 250; }
+
 	mEGun->Render();
 	mTexture->Update();
+	mEyeLids->Update();
 	std::cout << mHp << std::endl;
 	mEGun->Update();
 	
 	HandleMovement();
+	
 }
 
 void Enemy::Render() {
 
 	mTexture->Render();
+	if (mSleepState) { mEyeLids->Render(); }
 	mEGun->Render();
 
 	PhysEntity::Render();
@@ -76,10 +93,9 @@ void Enemy::Visible(bool visible) {
 }
 
 void Enemy::HandleMovement() {
-	if (mHp <= mMaxHp / 2) { mEnraged = true; }
-	
-	if (mEnraged == true) { mSpeed = mSpeed * 2; }
-	
+	if (mHp <= mMaxHp / 2) { mEnragedState = true; }
+	if (mEnragedState == true) { mSpeed = 500; }
+
 	switch (mMoveSwitch) {
 	case 0:
 		Translate(-Vec2_Right * mSpeed * mTimer->DeltaTime(), World);

@@ -2,18 +2,23 @@
 #define __SCREENMANAGER_H
 #include "StartScreen.h"
 #include "PlayScreen.h"
+#include "SpawnScreen.h"
 
 class ScreenManager {
 private:
 	static ScreenManager * sInstance;
 
-	enum Screens { Start, Play };
+	enum Screens { Start, Spawn, DungeonScreen };
 	Screens mCurrentScreen;
 
 	InputManager * mInput;
 
 	StartScreen * mStartScreen;
-	PlayScreen * mPlayScreen;
+	SpawnScreen* mSpawnScreen;
+	PlayScreen * mDungeonScreen;
+
+	bool mPlayScreenLock;
+	bool mSpawnScreenLock;
 
 public:
 	static ScreenManager * Instance();
@@ -22,6 +27,9 @@ public:
 	void Update();
 	void Render();
 
+	void CreatePlayScreen();
+	void CreateSpawnScreen();
+	
 private:
 	ScreenManager();
 	~ScreenManager();

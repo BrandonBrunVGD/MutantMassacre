@@ -50,8 +50,14 @@ PlayScreen::PlayScreen() {
 	delete mGUI;
 	mGUI = new GUIManager("E");
 	mGUI->Parent(this);
-	mGUI->Position(mCrystal->Position());
+	mGUI->Position(Graphics::SCREEN_WIDTH * 0.9f, Graphics::SCREEN_HEIGHT * 0.9f);
 	mGUI->Active(true);
+
+	delete mDoor;
+	mDoor = new Door();
+	mDoor->Parent(this);
+	mDoor->Position(Graphics::SCREEN_WIDTH * 0.5f, Graphics::SCREEN_HEIGHT * 0.9f);
+	mDoor->Active(true);
 
 	mRuinsBackground = new GLTexture("RuinsBackground.png");
 	mRuinsBackground->Parent(this);
@@ -60,6 +66,7 @@ PlayScreen::PlayScreen() {
 
 	mSpawnCrabShell = false;
 	mSpawnItemLock = false;
+	mInteracted = false;
 
 	SDL_ShowCursor(SDL_DISABLE);
 }
@@ -91,6 +98,9 @@ PlayScreen::~PlayScreen() {
 
 	delete mRuinsBackground;
 	mRuinsBackground = nullptr;
+
+	delete mDoor;
+	mDoor = nullptr;
 }
 
 void PlayScreen::Update() {
@@ -112,6 +122,9 @@ void PlayScreen::Update() {
 	mInventory->Update();
 	mGun->Update();
 	mCrystal->Update();
+	
+	mDoor->Update();
+	if (mDoor->GetInteracted() == true) { mInteracted = true; mDoor->SetInteracted(false); }
 
 	for (auto it = mDroppedItems.begin(); it != mDroppedItems.end(); ) {
 		(*it)->Update();
@@ -158,7 +171,7 @@ void PlayScreen::Update() {
 void PlayScreen::Render() {
 
 	mRuinsBackground->Render();
-
+	if (mDoor->WasHit() == true) { mDoor->Render(); }
 	if (mTarantuCrab != nullptr) { mTarantuCrab->Render(); }
 	
 	mCrystal->Render();
@@ -166,7 +179,7 @@ void PlayScreen::Render() {
 	for (auto it = mDroppedItems.begin(); it != mDroppedItems.end(); ++it) {
 		(*it)->Render();
 		if ((*it) != nullptr && (*it)->GetRenderGUI() == true) {
-			mGUI->Position((*it)->Position()); mGUI->Render();
+			mGUI->Render();
 		}
 		
 	}
@@ -177,7 +190,7 @@ void PlayScreen::Render() {
 	mCursor->Render();
 
 	if (mCrystal->GetRenderGUI() == true) { 
-		mGUI->Position(mCrystal->Position()); mGUI->Render();
+		mGUI->Render();
 	}
 
 }
@@ -198,4 +211,8 @@ void PlayScreen::SpawnDroppedItem() {
 	mDroppedCrabShell->Active(true);
 	mDroppedCrabShell->SetTag("crab shell");
 	mDroppedItems.push_back(mDroppedCrabShell);
+}
+
+void PlayScreen::SetInteracted(bool interacted) {
+	mInteracted = interacted;
 }

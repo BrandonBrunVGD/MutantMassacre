@@ -1,5 +1,5 @@
-#ifndef __PLAYSCREEN_H
-#define __PLAYSCREEN_H
+#ifndef __SPAWNSCREEN_H
+#define __SPAWNSCREEN_H
 #include "Timer.h"
 #include "AudioManager.h"
 #include "Player.h"
@@ -9,41 +9,34 @@
 #include "Enemy.h"
 #include "WorldItem.h"
 #include "GUIManager.h"
+#include "PhysEntity.h"
+#include "GameEntity.h"
 #include "Door.h"
 
-class PlayScreen : public GameEntity {
+class SpawnScreen : public GameEntity {
 private:
-	Timer * mTimer;
-	AudioManager * mAudio;
+	Timer* mTimer;
+	AudioManager* mAudio;
 	InputManager* mInput;
 
 	Inventory* mInventory;
 	Gun* mGun;
-	Player * mPlayer;
+	Player* mPlayer;
 	Cursor* mCursor;
-	Enemy* mTarantuCrab;
-	WorldItem* mCrystal;
-	WorldItem* mDroppedCrabShell;
 	GUIManager* mGUI;
 	Door* mDoor;
 
 	//Background Textures
-	Texture* mRuinsBackground;
+	Texture* mSpawnBackground;
 
-	bool mSpawnCrabShell;
-	bool mSpawnItemLock;
 	bool mInteracted;
 
 	static const int MAX_ENEMIES = 10;
 	Enemy* mEnemies[MAX_ENEMIES];
 
-	static const int MAX_DROPPED_ITEMS = 10;
-	std::vector<WorldItem*> mDroppedItems;
-	std::vector<WorldItem*> mDelDroppedItems;
-
 public:
-	PlayScreen();
-	~PlayScreen();
+	SpawnScreen();
+	~SpawnScreen();
 
 	void Update() override;
 	void Render() override;
@@ -53,7 +46,7 @@ public:
 
 	bool GetInteracted() { return mInteracted; }
 	void SetInteracted(bool interacted);
-
-	void SpawnDroppedItem();
 };
+
+
 #endif

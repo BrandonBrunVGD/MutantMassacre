@@ -23,13 +23,36 @@ void ScreenManager::Update() {
 
 		if (mStartScreen->getMenuSwitch() != 0) {
 			if (mInput->KeyPressed(SDL_SCANCODE_RETURN)) {
-				mCurrentScreen = Play;
+				mCurrentScreen = Spawn;
 			}
 		}
 		break;
-	case Play:
-		mPlayScreen->Update();
-		
+	case Spawn:
+		CreateSpawnScreen();
+		if (mSpawnScreen != nullptr) {
+			mSpawnScreen->Update();
+			if (mSpawnScreen->GetInteracted() == true) {
+				mSpawnScreen->SetInteracted(false);
+				delete mSpawnScreen;
+				mSpawnScreen = nullptr;
+				mPlayScreenLock = false;
+				mCurrentScreen = DungeonScreen;
+			}
+		}
+
+		break;
+	case DungeonScreen:
+		CreatePlayScreen();
+		if (mDungeonScreen != nullptr) {
+			mDungeonScreen->Update();
+			if (mDungeonScreen->GetInteracted() == true) {
+				mDungeonScreen->SetInteracted(false);
+				delete mDungeonScreen;
+				mDungeonScreen = nullptr;
+				mSpawnScreenLock = false;
+				mCurrentScreen = Spawn;
+			}
+		}
 		break;
 	}
 }
@@ -41,8 +64,17 @@ void ScreenManager::Render() {
 	case Start:
 		mStartScreen->Render();
 		break;
-	case Play:
-		mPlayScreen->Render();
+	case Spawn:
+		
+		if (mSpawnScreen != nullptr) {
+			mSpawnScreen->Render();
+		}
+		break;
+	case DungeonScreen:
+		
+		if (mDungeonScreen != nullptr) {
+			mDungeonScreen->Render();
+		}
 		break;
 	}
 }
@@ -52,9 +84,12 @@ ScreenManager::ScreenManager() {
 
 
 	mStartScreen = new StartScreen();
-	mPlayScreen = new PlayScreen();
-
+	//mSpawnScreen = new SpawnScreen();
+	
 	mCurrentScreen = Start;
+
+	mPlayScreenLock = false;
+	mSpawnScreenLock = false;
 }
 
 ScreenManager::~ScreenManager() {
@@ -63,6 +98,26 @@ ScreenManager::~ScreenManager() {
 	delete mStartScreen;
 	mStartScreen = nullptr;
 
-	delete mPlayScreen;
-	mPlayScreen = nullptr;
+	delete mSpawnScreen;
+	mSpawnScreen = nullptr;
+
+	delete mDungeonScreen;
+	mDungeonScreen = nullptr;
 }
+
+void ScreenManager::CreatePlayScreen() {
+	if (!mPlayScreenLock) {
+		mDungeonScreen = new PlayScreen();
+		mPlayScreenLock = true;
+	}
+}
+
+void ScreenManager::CreateSpawnScreen() {
+	if (!mSpawnScreenLock) {
+		mSpawnScreen = new SpawnScreen();
+		mSpawnScreenLock = true;
+	}
+}
+
+//To Do:
+//Switch Inventory Into Screen Manager or Fix Items Not Carrying Over Screens

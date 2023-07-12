@@ -25,6 +25,11 @@ WorldItem::WorldItem(std::string texture) {
 	mMinedCrystal->Position(Vec2_Zero);
 	mMinedCrystal->Scale(Vector2(0.10f, 0.10f));
 
+	mDroppedCrabShell = new GLTexture("CrabShell.png");
+	mDroppedCrabShell->Parent(this);
+	mDroppedCrabShell->Position(Vec2_Zero);
+	mDroppedCrabShell->Scale(Vector2(0.10f, 0.10f));
+
 	AddCollider(new CircleCollider(mCrystal->ScaledDimensions().y));
 
 	mId = PhysicsManager::Instance()->RegisterEntity(this, PhysicsManager::CollisionLayers::Hostile);
@@ -41,6 +46,8 @@ WorldItem::~WorldItem() {
 	delete mMinedCrystal;
 	mMinedCrystal = nullptr;
 
+	delete mDroppedCrabShell;
+	mDroppedCrabShell = nullptr;
 }
 
 bool WorldItem::IgnoreCollisions()	{
@@ -56,9 +63,9 @@ void WorldItem::Hit(PhysEntity* other) {
 void WorldItem::Update() {
 	mRenderGUI = false;
 	
-	if (mTexture == "crystal") { mCrystal->Update(); }
-	if (mTexture == "crystal") { mMinedCrystal->Update(); }
-
+	if (mTexture == "crystal") { mCrystal->Update(); mMinedCrystal->Update(); }
+	else if (mTexture == "crab shell") { mDroppedCrabShell->Update(); }
+	
 	if (!mMined && mWasHit) { mRenderGUI = true; }
 	else { mRenderGUI = false; }
 
@@ -68,7 +75,9 @@ void WorldItem::Update() {
 			mGiveItem = true;
 		}
 		mWasHit = false;
-	}	
+	}
+
+	std::cout << mTag << " " << mRenderGUI << std::endl;
 }
 
 void WorldItem::Render() {
@@ -77,6 +86,11 @@ void WorldItem::Render() {
 			mCrystal->Render();
 		}
 		else { mMinedCrystal->Render(); }
+	}
+	else if (mTexture == "crab shell") {
+		if (mMined == false) {
+			mDroppedCrabShell->Render();
+		}
 	}
 
 	PhysEntity::Render();

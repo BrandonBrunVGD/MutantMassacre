@@ -29,6 +29,8 @@ private:
 	Texture* mLegTexture;
 
 	Texture* mCrystalShard;
+	Texture* mCrabShell;
+	Texture* mStarterGun;
 
 	float mMoveSpeed;
 	Vector2 mMoveBounds;

@@ -49,9 +49,17 @@ PlayScreen::PlayScreen() {
 
 	delete mGUI;
 	mGUI = new GUIManager("E");
-	mGUI->Parent(mCrystal);
-	mGUI->Position(Vector2(80.0f, -80.0f));
+	mGUI->Parent(this);
+	mGUI->Position(mCrystal->Position());
 	mGUI->Active(true);
+
+	mRuinsBackground = new GLTexture("RuinsBackground.png");
+	mRuinsBackground->Parent(this);
+	mRuinsBackground->Position(Graphics::SCREEN_WIDTH * 0.5f, Graphics::SCREEN_HEIGHT * 0.5f);
+	mRuinsBackground->Active(true);
+
+	mSpawnCrabShell = false;
+	mSpawnItemLock = false;
 
 	SDL_ShowCursor(SDL_DISABLE);
 }
@@ -80,6 +88,9 @@ PlayScreen::~PlayScreen() {
 
 	delete mGUI;
 	mGUI = nullptr;
+
+	delete mRuinsBackground;
+	mRuinsBackground = nullptr;
 }
 
 void PlayScreen::Update() {
@@ -94,12 +105,30 @@ void PlayScreen::Update() {
 		}
 	}
 	
+	mRuinsBackground->Update();
 	mGUI->Update();
 	mPlayer->Update();	
 	mCursor->Update();
 	mInventory->Update();
 	mGun->Update();
 	mCrystal->Update();
+
+	for (auto it = mDroppedItems.begin(); it != mDroppedItems.end(); ) {
+		(*it)->Update();
+
+		if ((*it)->GetGiveItem() == true) {
+			mInventory->AddItem((*it)->GetTag());
+			(*it)->SetGiveItem(false);
+
+			mDelDroppedItems.push_back(*it);
+			it = mDroppedItems.erase(it);
+		}
+		else {
+			++it;
+		}
+		
+	}
+
 	mCursor->Position(mInput->MousePosition());
 	MenuOpen();
 
@@ -108,23 +137,49 @@ void PlayScreen::Update() {
 		mCrystal->SetGiveItem(false);
 	}
 
+	
+
 	mGun->SetTargetPos(mPlayer->Position());
 
+	if (!mSpawnItemLock) {
+		if (mTarantuCrab == nullptr) {
+			//mSpawnCrabShell = true; 
+			SpawnDroppedItem();
+			mSpawnItemLock = true;
+		}
+	}
+	
+	for (auto b : mDelDroppedItems) {
+		delete b;
+	}
+	mDelDroppedItems.clear();
 }
 
 void PlayScreen::Render() {
 
-	if (mTarantuCrab != nullptr) {
-		mTarantuCrab->Render();
-	}
+	mRuinsBackground->Render();
+
+	if (mTarantuCrab != nullptr) { mTarantuCrab->Render(); }
 	
 	mCrystal->Render();
+
+	for (auto it = mDroppedItems.begin(); it != mDroppedItems.end(); ++it) {
+		(*it)->Render();
+		if ((*it) != nullptr && (*it)->GetRenderGUI() == true) {
+			mGUI->Position((*it)->Position()); mGUI->Render();
+		}
+		
+	}
+
 	mPlayer->Render();
 	mGun->Render();
 	mInventory->Render();
 	mCursor->Render();
 
-	if (mCrystal->GetRenderGUI() == true) { mGUI->Render(); }
+	if (mCrystal->GetRenderGUI() == true) { 
+		mGUI->Position(mCrystal->Position()); mGUI->Render();
+	}
+
 }
 
 void PlayScreen::MenuOpen() {
@@ -134,4 +189,13 @@ void PlayScreen::MenuOpen() {
 	else {
 		mGun->CanShoot(true);
 	}
+}
+
+void PlayScreen::SpawnDroppedItem() {
+	mDroppedCrabShell = new WorldItem("crab shell");
+	mDroppedCrabShell->Parent(this);
+	mDroppedCrabShell->Position(Graphics::SCREEN_WIDTH * 0.5f, Graphics::SCREEN_HEIGHT * 0.5f);
+	mDroppedCrabShell->Active(true);
+	mDroppedCrabShell->SetTag("crab shell");
+	mDroppedItems.push_back(mDroppedCrabShell);
 }

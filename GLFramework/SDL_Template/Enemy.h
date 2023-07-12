@@ -14,6 +14,7 @@ private:
 
 	Texture* mTexture;
 	Texture* mEyeLids;
+	Texture* mShadow;
 	Gun* mEGun;
 
 	bool mVisible;

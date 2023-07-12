@@ -15,6 +15,8 @@ private:
 	Texture* mCrystal;
 	Texture* mMinedCrystal;
 
+	Texture* mDroppedCrabShell;
+
 	std::string mTexture;
 	bool mVisible;
 	bool mAnimating;

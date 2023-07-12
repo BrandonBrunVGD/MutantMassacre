@@ -21,6 +21,7 @@ private:
 	Item* mEpicArti;
 
 	Item* mCrystalShard;
+	Item* mCrabShell;
 
 	bool mVisible;
 	bool mAnimating;

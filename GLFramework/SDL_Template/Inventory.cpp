@@ -30,7 +30,7 @@ Inventory::Inventory() {
 	InventorySocketInit();
 	EquipedSocketInit();
 
-	CreateItem(mLegendaryGun, "legendary", "Gun", "gun");
+	CreateItem(mLegendaryGun, "legendary", "Gun", "starter gun");
 	CreateItem(mRareArti, "rare", "Arti", "arti");
 	CreateItem(mEpicArti, "epic", "Arti", "arti");
 
@@ -493,4 +493,5 @@ void Inventory::InventorySocketInit() {
 
 void Inventory::AddItem(std::string tag) {
 	if (tag == "crystal") { CreateItem(mCrystalShard, "epic", "Mat", "crystal shard"); }
+	else if (tag == "crab shell") { CreateItem(mCrabShell, "epic", "Mat", "crab shell"); }
 }

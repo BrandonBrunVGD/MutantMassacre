@@ -45,6 +45,9 @@ Item::~Item() {
 
 	delete mCrystalShard;
 	mCrystalShard = nullptr;
+
+	delete mCrabShell;
+	mCrabShell = nullptr;
 }
 
 void Item::Visible(bool visible) {
@@ -96,6 +99,8 @@ void Item::Render() {
 			else if (mTexture == "legendary") { mLegTexture->Render(); }
 
 			if (mItem == "crystal shard") { mCrystalShard->Render(); }
+			else if (mItem == "crab shell") { mCrabShell->Render(); }
+			else if (mItem == "starter gun") { mStarterGun->Render(); }
 		}
 	}
 
@@ -131,7 +136,18 @@ void Item::ItemTexture() {
 		mCrystalShard->Position(Vec2_Zero);
 		mCrystalShard->Scale(Vector2(0.25f, 0.25f));
 	}
-	
+	else if (mItem == "crab shell") {
+		mCrabShell = new GLTexture("CrabShell.png");
+		mCrabShell->Parent(this);
+		mCrabShell->Position(Vec2_Zero);
+		mCrabShell->Scale(Vector2(0.25f, 0.25f));
+	}
+	else if (mItem == "starter gun") {
+		mStarterGun = new GLTexture("StarterBlaster.png");
+		mStarterGun->Parent(this);
+		mStarterGun->Position(Vec2_Zero);
+		mStarterGun->Scale(Vector2(0.20f, 0.20f));
+	}
 }
 
 void Item::SetEquiped(bool equipe) {

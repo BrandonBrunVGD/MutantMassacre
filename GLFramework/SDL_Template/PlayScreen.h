@@ -22,10 +22,22 @@ private:
 	Cursor* mCursor;
 	Enemy* mTarantuCrab;
 	WorldItem* mCrystal;
+	WorldItem* mDroppedCrabShell;
 	GUIManager* mGUI;
+
+	//Background Textures
+	Texture* mRuinsBackground;
+
+	bool mSpawnCrabShell;
+	bool mSpawnItemLock;
 
 	static const int MAX_ENEMIES = 10;
 	Enemy* mEnemies[MAX_ENEMIES];
+
+	static const int MAX_DROPPED_ITEMS = 10;
+	std::vector<WorldItem*> mDroppedItems;
+	std::vector<WorldItem*> mDelDroppedItems;
+
 public:
 	PlayScreen();
 	~PlayScreen();
@@ -35,5 +47,7 @@ public:
 
 	void MenuOpen();
 	void OnItem();
+
+	void SpawnDroppedItem();
 };
 #endif

@@ -21,8 +21,13 @@ Enemy::Enemy() {
 
 	mEyeLids = new GLTexture("Tarantu-Crab EyeLids.png");
 	mEyeLids->Parent(this);
-	mEyeLids->Position(Vector2(0.0f, -50.0f));
+	mEyeLids->Position(Vector2(0.0f, -15.0f));
 	mEyeLids->Scale(Vector2(0.750f, 0.750f));
+
+	mShadow = new GLTexture("Tarantu-Crab Shadow.png");
+	mShadow->Parent(this);
+	mShadow->Position(Vector2(0.0f, 75.0f));
+	mShadow->Scale(Vector2(0.750f, 0.750f));
 
 	delete mEGun;
 	mEGun = new Gun();
@@ -49,6 +54,9 @@ Enemy::~Enemy() {
 	delete mEyeLids;
 	mEyeLids = nullptr;
 
+	delete mShadow;
+	mShadow = nullptr;
+
 	delete mEGun;
 	mEGun = nullptr;
 }
@@ -69,7 +77,6 @@ void Enemy::Update() {
 	if (mSleepState == true) { mEGun->CanShoot(false); mSpeed = 0; }
 	else { mEGun->CanShoot(true); mSpeed = 250; }
 
-	mEGun->Render();
 	mTexture->Update();
 	mEyeLids->Update();
 	std::cout << mHp << std::endl;
@@ -81,10 +88,11 @@ void Enemy::Update() {
 
 void Enemy::Render() {
 
+	mShadow->Render();
+	mEGun->Render();
 	mTexture->Render();
 	if (mSleepState) { mEyeLids->Render(); }
-	mEGun->Render();
-
+	
 	PhysEntity::Render();
 }
 

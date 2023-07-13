@@ -8,6 +8,9 @@ SpawnScreen::SpawnScreen() {
 	mInput = InputManager::Instance();
 
 	mInteracted = false;
+	mAddItem = false;
+	mItemToBeAdded = "null";
+	mMenuOpened = false;
 
 	delete mPlayer;
 	mPlayer = new Player();
@@ -23,12 +26,12 @@ SpawnScreen::SpawnScreen() {
 	mCursor->Active(true);
 	mCursor->SetTag("cursor");
 
-	delete mInventory;
+	/*delete mInventory;
 	mInventory = new Inventory();
 	mInventory->Parent(this);
 	mInventory->Position();
 	mInventory->Active(true);
-	mInventory->SetTag("null");
+	mInventory->SetTag("null");*/
 
 	delete mGun;
 	mGun = new Gun();
@@ -69,8 +72,8 @@ SpawnScreen::~SpawnScreen() {
 	delete mCursor;
 	mCursor = nullptr;
 
-	delete mInventory;
-	mInventory = nullptr;
+	//delete mInventory;
+	//mInventory = nullptr;
 
 	delete mGun;
 	mGun = nullptr;
@@ -94,7 +97,7 @@ void SpawnScreen::Update() {
 	mGUI->Update();
 	mPlayer->Update();
 	mCursor->Update();
-	mInventory->Update();
+	//mInventory->Update();
 	mGun->Update();
 
 	mCursor->Position(mInput->MousePosition());
@@ -111,13 +114,13 @@ void SpawnScreen::Render() {
 	mDoor->Render();
 	mPlayer->Render();
 	mGun->Render();
-	mInventory->Render();
+	//mInventory->Render();
 	mCursor->Render();
 	if (mDoor->WasHit() == true) { mGUI->Render(); }
 }
 
 void SpawnScreen::MenuOpen() {
-	if (mInventory->GetOpen() == true) {
+	if (mMenuOpened == true) {
 		mGun->CanShoot(false);
 	}
 	else {

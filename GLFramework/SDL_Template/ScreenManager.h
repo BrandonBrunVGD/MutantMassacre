@@ -3,8 +3,9 @@
 #include "StartScreen.h"
 #include "PlayScreen.h"
 #include "SpawnScreen.h"
+#include "Inventory.h"
 
-class ScreenManager {
+class ScreenManager : GameEntity{
 private:
 	static ScreenManager * sInstance;
 
@@ -16,6 +17,8 @@ private:
 	StartScreen * mStartScreen;
 	SpawnScreen* mSpawnScreen;
 	PlayScreen * mDungeonScreen;
+
+	Inventory* mInventory;
 
 	bool mPlayScreenLock;
 	bool mSpawnScreenLock;
@@ -30,6 +33,7 @@ public:
 	void CreatePlayScreen();
 	void CreateSpawnScreen();
 	
+	//void AddItemToInventory(std::string tag);
 private:
 	ScreenManager();
 	~ScreenManager();

@@ -39,7 +39,6 @@ void ScreenManager::Update() {
 				mCurrentScreen = DungeonScreen;
 			}
 		}
-
 		break;
 	case DungeonScreen:
 		CreatePlayScreen();
@@ -54,6 +53,14 @@ void ScreenManager::Update() {
 			}
 		}
 		break;
+	}
+	
+	mInventory->Update(); 
+	
+	if (mDungeonScreen != nullptr) {
+		if (mDungeonScreen->GetAddItem() == true) {
+			mInventory->AddItem(mDungeonScreen->AddItemToInventory());
+		}
 	}
 }
 
@@ -77,15 +84,33 @@ void ScreenManager::Render() {
 		}
 		break;
 	}
+
+	
+		if (mInventory->GetOpen() == true) {
+			mInventory->Render();
+			if (mDungeonScreen != nullptr) {
+				mDungeonScreen->SetMenuOpen(true);
+			}
+		}
+		else {
+			if (mDungeonScreen != nullptr) {
+				mDungeonScreen->SetMenuOpen(false);
+			}
+		}
+	
 }
 
 ScreenManager::ScreenManager() {
 	mInput = InputManager::Instance();
 
-
 	mStartScreen = new StartScreen();
 	//mSpawnScreen = new SpawnScreen();
 	
+	mInventory = new Inventory();
+	mInventory->Position();
+	mInventory->Active(true);
+	mInventory->SetTag("null");
+
 	mCurrentScreen = Start;
 
 	mPlayScreenLock = false;
@@ -103,6 +128,9 @@ ScreenManager::~ScreenManager() {
 
 	delete mDungeonScreen;
 	mDungeonScreen = nullptr;
+
+	delete mInventory;
+	mInventory = nullptr;
 }
 
 void ScreenManager::CreatePlayScreen() {
@@ -118,6 +146,3 @@ void ScreenManager::CreateSpawnScreen() {
 		mSpawnScreenLock = true;
 	}
 }
-
-//To Do:
-//Switch Inventory Into Screen Manager or Fix Items Not Carrying Over Screens

@@ -164,6 +164,7 @@ void Inventory::Render() {
 
 void Inventory::Open() {
 	if (mInput->KeyPressed(SDL_SCANCODE_I)) {
+		std::cout << "Opened Inventory" << std::endl;
 		mOpen = true;
 		SetTag("menu");
 		

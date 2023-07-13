@@ -18,17 +18,17 @@ WorldItem::WorldItem(std::string texture) {
 	mCrystal = new GLTexture("CrystalChunk.png");
 	mCrystal->Parent(this);
 	mCrystal->Position(Vec2_Zero);
-	mCrystal->Scale(Vector2(0.10f, 0.10f));
+	mCrystal->Scale(Vector2(0.20f, 0.20f));
 
 	mMinedCrystal = new GLTexture("MinedCrystal.png");
 	mMinedCrystal->Parent(this);
 	mMinedCrystal->Position(Vec2_Zero);
-	mMinedCrystal->Scale(Vector2(0.10f, 0.10f));
+	mMinedCrystal->Scale(Vector2(0.20f, 0.20f));
 
 	mDroppedCrabShell = new GLTexture("CrabShell.png");
 	mDroppedCrabShell->Parent(this);
 	mDroppedCrabShell->Position(Vec2_Zero);
-	mDroppedCrabShell->Scale(Vector2(0.10f, 0.10f));
+	mDroppedCrabShell->Scale(Vector2(0.20f, 0.20f));
 
 	AddCollider(new CircleCollider(mCrystal->ScaledDimensions().y));
 

@@ -19,12 +19,12 @@ PlayScreen::PlayScreen() {
 	mCursor->Active(true);
 	mCursor->SetTag("cursor");
 
-	delete mInventory;
+	/*delete mInventory;
 	mInventory = new Inventory();
 	mInventory->Parent(this);
 	mInventory->Position();
 	mInventory->Active(true);
-	mInventory->SetTag("null");
+	mInventory->SetTag("null");*/
 
 	delete mGun;
 	mGun = new Gun();
@@ -67,6 +67,8 @@ PlayScreen::PlayScreen() {
 	mSpawnCrabShell = false;
 	mSpawnItemLock = false;
 	mInteracted = false;
+	mAddItem = false;
+	mItemToBeAdded = "null";
 
 	SDL_ShowCursor(SDL_DISABLE);
 }
@@ -81,8 +83,8 @@ PlayScreen::~PlayScreen() {
 	delete mCursor;
 	mCursor = nullptr;
 
-	delete mInventory;
-	mInventory = nullptr;
+	//delete mInventory;
+	//mInventory = nullptr;
 
 	delete mGun;
 	mGun = nullptr;
@@ -105,6 +107,8 @@ PlayScreen::~PlayScreen() {
 
 void PlayScreen::Update() {
 	
+	mItemToBeAdded = "null";
+
 	if (mTarantuCrab != nullptr) {
 		if (mTarantuCrab->GetHp() > 0) {
 			mTarantuCrab->Update();
@@ -119,7 +123,7 @@ void PlayScreen::Update() {
 	mGUI->Update();
 	mPlayer->Update();	
 	mCursor->Update();
-	mInventory->Update();
+	//mInventory->Update();
 	mGun->Update();
 	mCrystal->Update();
 	
@@ -130,7 +134,9 @@ void PlayScreen::Update() {
 		(*it)->Update();
 
 		if ((*it)->GetGiveItem() == true) {
-			mInventory->AddItem((*it)->GetTag());
+			//mInventory->AddItem((*it)->GetTag());
+			mItemToBeAdded = (*it)->GetTag();
+			mAddItem = true;
 			(*it)->SetGiveItem(false);
 
 			mDelDroppedItems.push_back(*it);
@@ -146,11 +152,11 @@ void PlayScreen::Update() {
 	MenuOpen();
 
 	if (mCrystal->GetGiveItem() == true) { 
-		mInventory->AddItem(mCrystal->GetTag()); 
+		//mInventory->AddItem(mCrystal->GetTag()); 
+		mItemToBeAdded = mCrystal->GetTag();
+		mAddItem = true;
 		mCrystal->SetGiveItem(false);
 	}
-
-	
 
 	mGun->SetTargetPos(mPlayer->Position());
 
@@ -186,7 +192,7 @@ void PlayScreen::Render() {
 
 	mPlayer->Render();
 	mGun->Render();
-	mInventory->Render();
+	//mInventory->Render();
 	mCursor->Render();
 
 	if (mCrystal->GetRenderGUI() == true) { 
@@ -196,7 +202,7 @@ void PlayScreen::Render() {
 }
 
 void PlayScreen::MenuOpen() {
-	if (mInventory->GetOpen() == true) {
+	if (mMenuOpened == true) {
 		mGun->CanShoot(false);
 	}
 	else {

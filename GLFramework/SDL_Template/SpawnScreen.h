@@ -4,7 +4,6 @@
 #include "AudioManager.h"
 #include "Player.h"
 #include "Cursor.h"
-#include "Inventory.h"
 #include "Gun.h"
 #include "Enemy.h"
 #include "WorldItem.h"
@@ -19,7 +18,7 @@ private:
 	AudioManager* mAudio;
 	InputManager* mInput;
 
-	Inventory* mInventory;
+	//Inventory* mInventory;
 	Gun* mGun;
 	Player* mPlayer;
 	Cursor* mCursor;
@@ -34,6 +33,10 @@ private:
 	static const int MAX_ENEMIES = 10;
 	Enemy* mEnemies[MAX_ENEMIES];
 
+	bool mAddItem;
+	std::string mItemToBeAdded;
+	bool mMenuOpened;
+
 public:
 	SpawnScreen();
 	~SpawnScreen();
@@ -46,6 +49,11 @@ public:
 
 	bool GetInteracted() { return mInteracted; }
 	void SetInteracted(bool interacted);
+
+	std::string AddItemToInventory() { return mItemToBeAdded; mAddItem = true; }
+	bool GetAddItem() { return mAddItem; mAddItem = false; }
+	void SetMenuOpen(bool opened) { mMenuOpened = opened; }
+
 };
 
 

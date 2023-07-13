@@ -5,34 +5,41 @@
 void Player::HandleMovement() {
 	if (mInput->KeyDown(SDL_SCANCODE_D)) {
 		Translate(Vec2_Right * mMoveSpeed * mTimer->DeltaTime(), World);
-
+		mAnimating = true;
+		mWalkingLeft = false;
+		mWalkingRight = true;
 		if (mInput->KeyPressed(SDL_SCANCODE_SPACE)) {
 			Translate(Vec2_Right * (mMoveSpeed * 20) * mTimer->DeltaTime(), World);
 		}
 	}
 	else if (mInput->KeyDown(SDL_SCANCODE_A)) {
 		Translate(-Vec2_Right * mMoveSpeed * mTimer->DeltaTime(), World);
-
+		mAnimating = true;
+		mWalkingRight = false;
+		mWalkingLeft = true;
 		if (mInput->KeyPressed(SDL_SCANCODE_SPACE)) {
 			Translate(-Vec2_Right * (mMoveSpeed * 20) * mTimer->DeltaTime(), World);
 		}
 	}
+	else { mAnimating = false; mWalkingRight = false; mWalkingLeft = false; }
 
 	if (mInput->KeyDown(SDL_SCANCODE_W)) {
 		Translate(-Vec2_Up * mMoveSpeed * mTimer->DeltaTime(), World);
-
+		//mAnimating = true;
 		if (mInput->KeyPressed(SDL_SCANCODE_SPACE)) {
 			Translate(-Vec2_Up * (mMoveSpeed * 20) * mTimer->DeltaTime(), World);
 		}
 	}
 	else if (mInput->KeyDown(SDL_SCANCODE_S)) {
 		Translate(Vec2_Up * mMoveSpeed * mTimer->DeltaTime(), World);
-
+		//mAnimating = true;
 		if (mInput->KeyPressed(SDL_SCANCODE_SPACE)) {
 			Translate(Vec2_Up * (mMoveSpeed * 20) * mTimer->DeltaTime(), World);
 		}
 	}
+	//else { mAnimating = false; }
 
+	//mAnimating = false;
 	//Vector2 pos = Position(Local);
 	//if (pos.x < mMoveBounds.x) {
 		//pos.x = mMoveBounds.x;
@@ -56,17 +63,23 @@ Player::Player() {
 	mScore = 0;
 	mHp = 1000;
 
-	mShip = new GLTexture("PlayerShips.png", 0, 0, 60, 64);
-	mShip->Parent(this);
-	mShip->Position(Vec2_Zero);
+	mPlayer = new GLTexture("CharacterWalkAnim.png", 0, 0, 338, 338);
+	mPlayer->Parent(this);
+	mPlayer->Position(Vec2_Zero);
+	mPlayer->Scale(Vector2(0.50f, 0.50f));
 
 	mMoveSpeed = 450.0f;
 	mMoveBounds = Vector2(1920, 1080);
 
-	mDeathAnimation = new AnimatedGLTexture("PlayerExplosion.png", 0, 0, 128, 128, 4, 1.0f, Animation::Layouts::Horizontal);
-	mDeathAnimation->Parent(this);
-	mDeathAnimation->Position(Vec2_Zero);
-	mDeathAnimation->SetWrapMode(Animation::WrapModes::Once);
+	mWalkAnim = new AnimatedGLTexture("CharacterWalkAnim.png", 0, 0, 338, 338, 5, 1.0f, Animation::Layouts::Horizontal);
+	mWalkAnim->Parent(this);
+	mWalkAnim->Position(Vec2_Zero);
+	mWalkAnim->SetWrapMode(Animation::WrapModes::Loop);
+
+	mWalkAnimLeft = new AnimatedGLTexture("CharacterWalkAnimLeft.png", 0, 0, 338, 338, 5, 1.0f, Animation::Layouts::Horizontal);
+	mWalkAnimLeft->Parent(this);
+	mWalkAnimLeft->Position(Vec2_Zero);
+	mWalkAnimLeft->SetWrapMode(Animation::WrapModes::Loop);
 
 	AddCollider(new BoxCollider(Vector2(16.0f, 67.0f)));
 
@@ -80,11 +93,14 @@ Player::~Player() {
 	mInput = nullptr;
 	mAudio = nullptr;
 
-	delete mShip;
-	mShip = nullptr;
+	delete mPlayer;
+	mPlayer = nullptr;
 
-	delete mDeathAnimation;
-	mDeathAnimation = nullptr;
+	delete mWalkAnim;
+	mWalkAnim = nullptr;
+
+	delete mWalkAnimLeft;
+	mWalkAnimLeft = nullptr;
 }
 
 void Player::Visible(bool visible) {
@@ -134,8 +150,9 @@ void Player::Update() {
 			mWasHit = false;
 		}
 
-		mDeathAnimation->Update();
-		mAnimating = mDeathAnimation->IsAnimating();
+		mWalkAnim->Update();
+		mWalkAnimLeft->Update();
+		//mAnimating = mWalkAnim->IsAnimating();
 	}
 	else {
 		if (Active()) {
@@ -148,10 +165,15 @@ void Player::Update() {
 void Player::Render() {
 	if (mVisible) {
 		if (mAnimating) {
-			mDeathAnimation->Render();
+			if (mWalkingRight) {
+				mWalkAnim->Render();
+			}
+			else if (mWalkingLeft) {
+				mWalkAnimLeft->Render();
+			}
 		}
 		else {
-			mShip->Render();
+			mPlayer->Render();
 		}
 	}
 

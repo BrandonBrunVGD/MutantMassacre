@@ -18,6 +18,7 @@ SpawnScreen::SpawnScreen() {
 	mPlayer->Position(Graphics::SCREEN_WIDTH * 0.4f, Graphics::SCREEN_HEIGHT * 0.8f);
 	mPlayer->Active(true);
 	mPlayer->SetTag("player");
+	
 
 	delete mCursor;
 	mCursor = new Cursor();
@@ -51,6 +52,12 @@ SpawnScreen::SpawnScreen() {
 	mDoor->Position(Graphics::SCREEN_WIDTH * 0.5f, Graphics::SCREEN_HEIGHT * 0.19f);
 	mDoor->Active(true);
 	mDoor->SetTag("door");
+
+	mBlackSmith = new BlackSmith();
+	mBlackSmith->Parent(this);
+	mBlackSmith->Position(Graphics::SCREEN_WIDTH * 0.8, Graphics::SCREEN_HEIGHT * 0.5);
+	mBlackSmith->Active(true);
+	mBlackSmith->SetTag("blacksmith");
 
 	mSpawnBackground = new GLTexture("SpawnScreenBackground.png");
 	mSpawnBackground->Parent(this);
@@ -86,6 +93,9 @@ SpawnScreen::~SpawnScreen() {
 
 	delete mDoor;
 	mDoor = nullptr;
+
+	delete mBlackSmith;
+	mBlackSmith = nullptr;
 }
 
 void SpawnScreen::Update() {
@@ -94,6 +104,7 @@ void SpawnScreen::Update() {
 
 	mSpawnBackground->Update();
 	mDoor->Update();
+	mBlackSmith->Update();
 	mGUI->Update();
 	mPlayer->Update();
 	mCursor->Update();
@@ -112,6 +123,7 @@ void SpawnScreen::Render() {
 
 	mSpawnBackground->Render();
 	mDoor->Render();
+	mBlackSmith->Render();
 	mPlayer->Render();
 	mGun->Render();
 	//mInventory->Render();

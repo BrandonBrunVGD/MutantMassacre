@@ -27,6 +27,7 @@ private:
 	bool mAnimating;
 	bool mWasHit;
 
+	bool mCanOpen;
 	bool mOpen;
 	bool mOnItem;
 	int mSelectedSocket;
@@ -66,8 +67,11 @@ public:
 	void Open();
 	void Close();
 
-	bool GetOpen();
-	void SetOnItem(bool item);
+	bool GetCanOpen() {return mCanOpen; }
+	void SetCanOpen(bool canOpen) { mCanOpen = canOpen; }
+
+	bool GetOpen() { return mOpen; }
+	void SetOnItem(bool item) { mOnItem = item; }
 
 	void SetGiveItem(bool give);
 

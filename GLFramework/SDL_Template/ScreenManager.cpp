@@ -19,6 +19,7 @@ void ScreenManager::Update() {
 
 	switch (mCurrentScreen) {
 	case Start:
+		mInventory->SetCanOpen(false);
 		mStartScreen->Update();
 
 		if (mStartScreen->getMenuSwitch() != 0) {
@@ -28,9 +29,12 @@ void ScreenManager::Update() {
 		}
 		break;
 	case Spawn:
+		mInventory->SetCanOpen(true);
 		CreateSpawnScreen();
+
 		if (mSpawnScreen != nullptr) {
 			mSpawnScreen->Update();
+
 			if (mSpawnScreen->GetInteracted() == true) {
 				mSpawnScreen->SetInteracted(false);
 				delete mSpawnScreen;
@@ -41,9 +45,12 @@ void ScreenManager::Update() {
 		}
 		break;
 	case DungeonScreen:
+		mInventory->SetCanOpen(true);
 		CreatePlayScreen();
+
 		if (mDungeonScreen != nullptr) {
 			mDungeonScreen->Update();
+
 			if (mDungeonScreen->GetInteracted() == true) {
 				mDungeonScreen->SetInteracted(false);
 				delete mDungeonScreen;
@@ -55,7 +62,9 @@ void ScreenManager::Update() {
 		break;
 	}
 	
-	mInventory->Update(); 
+	if (mInventory->GetCanOpen() == true) {
+		mInventory->Update();
+	}
 	
 	if (mDungeonScreen != nullptr) {
 		if (mDungeonScreen->GetAddItem() == true) {
@@ -85,7 +94,7 @@ void ScreenManager::Render() {
 		break;
 	}
 
-	
+	if (mInventory->GetCanOpen() == true) {
 		if (mInventory->GetOpen() == true) {
 			mInventory->Render();
 			if (mDungeonScreen != nullptr) {
@@ -97,6 +106,7 @@ void ScreenManager::Render() {
 				mDungeonScreen->SetMenuOpen(false);
 			}
 		}
+	}
 	
 }
 

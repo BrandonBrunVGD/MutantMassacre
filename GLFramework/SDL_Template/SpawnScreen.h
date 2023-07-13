@@ -11,6 +11,7 @@
 #include "PhysEntity.h"
 #include "GameEntity.h"
 #include "Door.h"
+#include "BlackSmith.h"
 
 class SpawnScreen : public GameEntity {
 private:
@@ -24,6 +25,7 @@ private:
 	Cursor* mCursor;
 	GUIManager* mGUI;
 	Door* mDoor;
+	BlackSmith* mBlackSmith;
 
 	//Background Textures
 	Texture* mSpawnBackground;

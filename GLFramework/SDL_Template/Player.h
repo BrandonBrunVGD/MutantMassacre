@@ -20,8 +20,12 @@ private:
 	int mScore;
 	int mHp;
 
-	Texture* mShip;
-	AnimatedGLTexture* mDeathAnimation;
+	bool mWalkingLeft;
+	bool mWalkingRight;
+
+	Texture* mPlayer;
+	AnimatedGLTexture* mWalkAnim;
+	AnimatedGLTexture* mWalkAnimLeft;
 
 	float mMoveSpeed;
 	Vector2 mMoveBounds;

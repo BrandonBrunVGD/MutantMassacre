@@ -14,6 +14,7 @@ Inventory::Inventory() {
 
 	mSocketOffset = 200;
 
+	mCanOpen = false;
 	mOpen = false;
 	mOnItem = false;
 	mSelectedSocket = -1;
@@ -88,8 +89,10 @@ bool Inventory::IgnoreCollisions()
 
 void Inventory::Update() {
 
-	Open();
-	Close();
+	if (mCanOpen) {
+		Open();
+		Close();
+	}
 
 	if (mOpen) { 
 		for (int i = 0; i < MAX_SOCKETS; ++i) {
@@ -192,14 +195,6 @@ void Inventory::Close() {
 			}
 		}
 	}
-}
-
-bool Inventory::GetOpen() {
-	return mOpen;
-}
-
-void Inventory::SetOnItem(bool item) {
-	mOnItem = item;
 }
 
 void Inventory::Equipe() {

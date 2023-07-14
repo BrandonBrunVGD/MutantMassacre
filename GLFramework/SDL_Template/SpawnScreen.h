@@ -22,7 +22,7 @@ private:
 	//Inventory* mInventory;
 	Gun* mGun;
 	Player* mPlayer;
-	Cursor* mCursor;
+	//Cursor* mCursor;
 	GUIManager* mGUI;
 	GUIManager* mGUISPACE;
 	Door* mDoor;
@@ -39,6 +39,10 @@ private:
 	bool mAddItem;
 	std::string mItemToBeAdded;
 	bool mMenuOpened;
+
+	std::string mCreateGun;
+	bool mCreateGunLock;
+	bool mDelGunLock;
 
 public:
 	SpawnScreen();
@@ -57,6 +61,10 @@ public:
 	bool GetAddItem() { return mAddItem; mAddItem = false; }
 	void SetMenuOpen(bool opened) { mMenuOpened = opened; }
 
+	void SetCreateGun(std::string create) { mCreateGun = create; }
+
+	void CreateGun();
+	void DelGun();
 };
 
 

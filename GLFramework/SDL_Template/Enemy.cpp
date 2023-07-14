@@ -79,7 +79,7 @@ void Enemy::Update() {
 
 	mTexture->Update();
 	mEyeLids->Update();
-	std::cout << mHp << std::endl;
+	std::cout << std::endl << "Enemy HP: " << mHp << std::endl;
 	mEGun->Update();
 	
 	HandleMovement();

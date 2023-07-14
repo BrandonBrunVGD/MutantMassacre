@@ -38,6 +38,14 @@ void Player::HandleMovement() {
 		}
 	}
 
+	if (mCanShoot) {		
+		if (mInput->MouseButtonPressed(InputManager::MouseButton::Left)) {
+			mAudio->PlaySFX("SFX/GunShot.wav");
+			
+		}
+		
+	}
+
 	//mAnimating = false;
 	//Vector2 pos = Position(Local);
 	//if (pos.x < mMoveBounds.x) {
@@ -138,7 +146,7 @@ void Player::Hit(PhysEntity* other) {
 		mHp -= 1;
 		mWasHit = true;
 	}
-	std::cout << "WAS HIT" << std::endl;
+	std::cout << "WAS HIT BY: " << other->GetTag() << std::endl;
 }
 
 bool Player::WasHit() {
@@ -147,24 +155,13 @@ bool Player::WasHit() {
 
 void Player::Update() {
 	
+	mWalkAnim->Update();
+	mWalkAnimLeft->Update();
 
-		
-
-		mWalkAnim->Update();
-		mWalkAnimLeft->Update();
-
-		/*if (mWalkingRight) {
-			mAnimating = mWalkAnim->IsAnimating();
-		}
-		else if (mWalkingLeft) {
-			mAnimating = mWalkAnimLeft->IsAnimating();
-		}*/
-	
-
-		if (Active()) {
-			std::cout << mHp << std::endl;
-			HandleMovement();
-		}
+	if (Active()) {
+		std::cout << "Player HP: " << mHp << std::endl;
+		HandleMovement();
+	}
 		
 }
 

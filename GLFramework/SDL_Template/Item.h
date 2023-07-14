@@ -31,6 +31,8 @@ private:
 	Texture* mCrystalShard;
 	Texture* mCrabShell;
 	Texture* mStarterGun;
+	Texture* mRareRing;
+	Texture* mIronHelm;
 
 	float mMoveSpeed;
 	Vector2 mMoveBounds;
@@ -60,6 +62,8 @@ public:
 
 	bool GetSelected() { return mSelected; }
 	std::string GetItemType() { return mItemType; }
+
+	std::string GetItemName() { return mItem; }
 
 	bool GetEquiped() { return mEquiped; }
 	void SetEquiped(bool equipe);

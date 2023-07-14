@@ -19,7 +19,6 @@ private:
 	//Inventory* mInventory;
 	Gun* mGun;
 	Player * mPlayer;
-	Cursor* mCursor;
 	Enemy* mTarantuCrab;
 	WorldItem* mCrystal;
 	WorldItem* mDroppedCrabShell;
@@ -39,6 +38,10 @@ private:
 		bool mMenuOpened;
 
 	int mPlayerHp;
+
+	std::string mCreateGun;
+	bool mCreateGunLock;
+	bool mDelGunLock;
 
 	static const int MAX_ENEMIES = 10;
 	Enemy* mEnemies[MAX_ENEMIES];
@@ -75,5 +78,10 @@ public:
 	bool GetPlayerHp() { return mPlayerHp; }
 
 	void SpawnDroppedItem();
+
+	void SetCreateGun(std::string create) { mCreateGun = create; }
+
+	void CreateGun();
+	void DelGun();
 };
 #endif

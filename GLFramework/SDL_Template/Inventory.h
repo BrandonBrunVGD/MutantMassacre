@@ -38,6 +38,7 @@ private:
 
 	int mSocketOffset;
 	int mEmptySocket;
+	std::string mCreateGun;
 
 	static const int MAX_SOCKETS = 25;
 	InventorySocket* mSockets[MAX_SOCKETS];
@@ -76,6 +77,7 @@ public:
 	void SetGiveItem(bool give);
 
 	void Equipe();
+	void ApplyEquipe();
 	void UnEquipe();
 	void Move();
 
@@ -84,6 +86,8 @@ public:
 
 	void InventorySocketInit();
 	void EquipedSocketInit();
+
+	std::string GetCreateGun() { return mCreateGun; }
 
 	std::vector<Item*> mInventoryVec;
 	std::vector<Item*>::iterator mInventoryIter;

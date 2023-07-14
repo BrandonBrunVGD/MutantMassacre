@@ -5,6 +5,7 @@
 #include "SpawnScreen.h"
 #include "DeathScreen.h"
 #include "Inventory.h"
+#include "Cursor.h"
 
 class ScreenManager : GameEntity{
 private:
@@ -21,6 +22,7 @@ private:
 	DeathScreen* mDeathScreen;
 
 	Inventory* mInventory;
+	Cursor* mCursor;
 
 	bool mPlayScreenLock;
 	bool mSpawnScreenLock;
@@ -36,6 +38,7 @@ public:
 	void CreatePlayScreen();
 	void CreateSpawnScreen();
 	void CreateDeathScreen();
+
 
 	//void AddItemToInventory(std::string tag);
 private:

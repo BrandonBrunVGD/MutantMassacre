@@ -77,7 +77,7 @@ void WorldItem::Update() {
 		mWasHit = false;
 	}
 
-	std::cout << mTag << " " << mRenderGUI << std::endl;
+	//std::cout << mTag << " " << mRenderGUI << std::endl;
 }
 
 void WorldItem::Render() {

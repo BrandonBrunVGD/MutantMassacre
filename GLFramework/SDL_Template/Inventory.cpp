@@ -2,7 +2,6 @@
 #include "BoxCollider.h"
 #include "PhysicsManager.h"
 
-
 Inventory::Inventory() {
 	mTimer = Timer::Instance();
 	mInput = InputManager::Instance();
@@ -23,6 +22,8 @@ Inventory::Inventory() {
 
 	mInventorySpace = -1;
 	mEmptySocket = 0;
+	
+	mCreateGun = "null";
 
 	mBackground = new GLTexture("Inventory.png", 0, 0, 1920, 1080);
 	mBackground->Parent(this);
@@ -32,8 +33,8 @@ Inventory::Inventory() {
 	EquipedSocketInit();
 
 	CreateItem(mLegendaryGun, "legendary", "Gun", "starter gun");
-	CreateItem(mRareArti, "rare", "Arti", "arti");
-	CreateItem(mEpicArti, "epic", "Arti", "arti");
+	CreateItem(mRareArti, "rare", "Arti", "rare ring");
+	CreateItem(mEpicArti, "epic", "Helm", "iron helm");
 
 	mMoveBounds = Vector2(1920, 1080);
 
@@ -135,7 +136,7 @@ void Inventory::Update() {
 			for (auto b : mEquipedArtiVec) { b->Update(); }
 		}
 	}
-	std::cout << std::endl << mInventorySpace << std::endl << std::endl;
+	//std::cout << std::endl << mInventorySpace << std::endl << std::endl;
 }
 
 void Inventory::Render() {
@@ -224,6 +225,7 @@ void Inventory::Equipe() {
 						mEquipedGunVec[0]->SetEquiped(true);
 						mEquipedSockets[0]->SetFull(true);
 						mSockets[mInventoryVec[i]->GetLastSocket()]->SetFull(false);
+						ApplyEquipe();
 					}
 					else if (mInventoryVec[i]->GetItemType() == "Helm") {
 						if (mEquipedSockets[1]->GetFull() == true) {
@@ -334,6 +336,7 @@ void Inventory::UnEquipe() {
 			mEquipedSockets[0]->SetFull(false);
 			mSockets[mEmptySocket]->SetFull(true);
 			mInventoryVec[mInventorySpace]->SetLastSocket(mEmptySocket);
+			mCreateGun = "null";
 		}
 	}
 	else if (mEquipedSockets[1]->GetSelected() == true && mEquipedSockets[1]->GetFull() == true) {
@@ -490,4 +493,10 @@ void Inventory::InventorySocketInit() {
 void Inventory::AddItem(std::string tag) {
 	if (tag == "crystal") { CreateItem(mCrystalShard, "epic", "Mat", "crystal shard"); }
 	else if (tag == "crab shell") { CreateItem(mCrabShell, "epic", "Mat", "crab shell"); }
+}
+
+void Inventory::ApplyEquipe() {
+	if (mEquipedGunVec[0]->GetItemName() == "starter gun") {
+		mCreateGun = "starter gun";
+	}
 }

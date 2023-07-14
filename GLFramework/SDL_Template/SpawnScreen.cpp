@@ -12,27 +12,16 @@ SpawnScreen::SpawnScreen() {
 	mItemToBeAdded = "null";
 	mMenuOpened = false;
 
+	mCreateGun = "null";
+	mCreateGunLock = false;
+	mDelGunLock = true;
+
 	delete mPlayer;
 	mPlayer = new Player();
 	mPlayer->Parent(this);
 	mPlayer->Position(Graphics::SCREEN_WIDTH * 0.4f, Graphics::SCREEN_HEIGHT * 0.8f);
 	mPlayer->Active(true);
 	mPlayer->SetTag("player");
-	
-
-	delete mCursor;
-	mCursor = new Cursor();
-	mCursor->Parent(this);
-	mCursor->Position();
-	mCursor->Active(true);
-	mCursor->SetTag("cursor");
-
-	delete mGun;
-	mGun = new Gun();
-	mGun->Parent(mPlayer);
-	mGun->Position(Vector2(80, 0));
-	mGun->Active(true);
-	mGun->SetTag("player gun");
 
 	delete mGUI;
 	mGUI = new GUIManager("E");
@@ -63,8 +52,6 @@ SpawnScreen::SpawnScreen() {
 	mSpawnBackground->Position(Graphics::SCREEN_WIDTH * 0.5f, Graphics::SCREEN_HEIGHT * 0.5f);
 	mSpawnBackground->Active(true);
 
-	
-
 	SDL_ShowCursor(SDL_DISABLE);
 }
 
@@ -74,12 +61,6 @@ SpawnScreen::~SpawnScreen() {
 
 	delete mPlayer;
 	mPlayer = nullptr;
-
-	delete mCursor;
-	mCursor = nullptr;
-
-	//delete mInventory;
-	//mInventory = nullptr;
 
 	delete mGun;
 	mGun = nullptr;
@@ -103,22 +84,25 @@ SpawnScreen::~SpawnScreen() {
 void SpawnScreen::Update() {
 
 	//if (mWasHit) { mWasHit = false; mGUI->Position(mPlayer->Position()); }
-
+	std::cout << mCreateGun << std::endl;
 	mSpawnBackground->Update();
 	mDoor->Update();
 	mBlackSmith->Update();
 	mGUI->Update();
 	mPlayer->Update();
-	mCursor->Update();
-	//mInventory->Update();
-	mGun->Update();
 
-	mCursor->Position(mInput->MousePosition());
-	MenuOpen();
-
-	mGun->SetTargetPos(mPlayer->Position());
+	CreateGun();
+	DelGun();
+	if (mGun != nullptr) { 
+		mGun->Update(); 
+		mGun->SetTargetPos(mPlayer->Position());
+		MenuOpen();
+	}
 
 	if (mDoor->GetInteracted() == true) { mInteracted = true; mDoor->SetInteracted(false); }
+
+	if (mMenuOpened) { mPlayer->SetCanShoot(false); }
+	else { mPlayer->SetCanShoot(true); }
 }
 
 void SpawnScreen::Render() {
@@ -127,9 +111,8 @@ void SpawnScreen::Render() {
 	mDoor->Render();
 	mBlackSmith->Render();
 	mPlayer->Render();
-	mGun->Render();
-	//mInventory->Render();
-	mCursor->Render();
+	if (mGun != nullptr) { mGun->Render(); }
+	
 	if (mDoor->WasHit() == true) { mGUI->Render(); }
 	mGUISPACE->Render();
 }
@@ -145,4 +128,35 @@ void SpawnScreen::MenuOpen() {
 
 void SpawnScreen::SetInteracted(bool interacted) {
 	mInteracted = interacted;
+}
+
+void SpawnScreen::CreateGun() {
+	if (mCreateGun == "null") { mCreateGunLock = false; }
+	if (!mCreateGunLock) {
+		if (mCreateGun == "starter gun") {
+			mGun = new Gun();
+			mGun->Parent(mPlayer);
+			mGun->Position(Vector2(80, 0));
+			mGun->Active(true);
+			mGun->SetTag("player gun");
+			std::cout << "CREATED GUN" << std::endl;
+			mCreateGunLock = true;
+			mPlayer->SetCanShoot(true);
+		}
+		
+	}
+}
+void SpawnScreen::DelGun() {
+	if (mCreateGun != "null") { mDelGunLock = false; }
+	if (!mDelGunLock) {
+		if (mCreateGun == "null") {
+			delete mGun;
+			mGun = nullptr;
+			std::cout << "DELETED GUN" << std::endl;
+			mDelGunLock = true;
+			mCreateGunLock = true;
+			mPlayer->SetCanShoot(false);
+		}
+		
+	}
 }

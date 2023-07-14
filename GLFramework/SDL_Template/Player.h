@@ -22,6 +22,7 @@ private:
 
 	bool mWalkingLeft;
 	bool mWalkingRight;
+	bool mCanShoot;
 
 	Texture* mPlayer;
 	AnimatedGLTexture* mWalkAnim;
@@ -52,6 +53,8 @@ public:
 
 	bool WasHit();
 	void SetWasHit(bool hit) { mWasHit = hit; }
+
+	void SetCanShoot(bool shoot) { mCanShoot = shoot; }
 
 	void Update() override;
 	void Render() override;

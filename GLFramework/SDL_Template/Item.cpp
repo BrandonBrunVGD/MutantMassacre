@@ -48,6 +48,12 @@ Item::~Item() {
 
 	delete mCrabShell;
 	mCrabShell = nullptr;
+
+	delete mStarterGun;
+	mStarterGun = nullptr;
+
+	delete mRareRing;
+	mRareRing = nullptr;
 }
 
 void Item::Visible(bool visible) {
@@ -81,7 +87,6 @@ void Item::Update() {
 			if (mTexture == "rare") { mRareTexture->Update(); }
 			else if (mTexture == "epic") { mEpicTexture->Update(); }
 			else if (mTexture == "legendary") { mLegTexture->Update(); }
-
 		
 		}
 	}
@@ -101,6 +106,8 @@ void Item::Render() {
 			if (mItem == "crystal shard") { mCrystalShard->Render(); }
 			else if (mItem == "crab shell") { mCrabShell->Render(); }
 			else if (mItem == "starter gun") { mStarterGun->Render(); }
+			else if (mItem == "rare ring") { mRareRing->Render(); }
+			else if (mItem == "iron helm") { mIronHelm->Render(); }
 		}
 	}
 
@@ -147,6 +154,18 @@ void Item::ItemTexture() {
 		mStarterGun->Parent(this);
 		mStarterGun->Position(Vec2_Zero);
 		mStarterGun->Scale(Vector2(0.20f, 0.20f));
+	}
+	else if (mItem == "rare ring") {
+		mRareRing = new GLTexture("Ring.png");
+		mRareRing->Parent(this);
+		mRareRing->Position(Vec2_Zero);
+		mRareRing->Scale(Vector2(0.50f, 0.50f));
+	}
+	else if (mItem == "iron helm") {
+		mIronHelm = new GLTexture("IronHelm.png");
+		mIronHelm->Parent(this);
+		mIronHelm->Position(Vec2_Zero);
+		mIronHelm->Scale(Vector2(0.30f, 0.30f));
 	}
 }
 

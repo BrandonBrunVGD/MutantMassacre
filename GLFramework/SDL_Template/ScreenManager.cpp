@@ -28,12 +28,16 @@ void ScreenManager::Update() {
 			}
 		}
 		break;
+
 	case Spawn:
+		mCursor->Update();
+		mCursor->Position(mInput->MousePosition());
 		mInventory->SetCanOpen(true);
 		CreateSpawnScreen();
 
 		if (mSpawnScreen != nullptr) {
 			mSpawnScreen->Update();
+			mSpawnScreen->SetCreateGun(mInventory->GetCreateGun());
 
 			if (mSpawnScreen->GetInteracted() == true) {
 				mSpawnScreen->SetInteracted(false);
@@ -45,12 +49,16 @@ void ScreenManager::Update() {
 			}
 		}
 		break;
+
 	case DungeonScreen:
+		mCursor->Update();
+		mCursor->Position(mInput->MousePosition());
 		mInventory->SetCanOpen(true);
 		CreatePlayScreen();
 
 		if (mDungeonScreen != nullptr) {
 			mDungeonScreen->Update();
+			mDungeonScreen->SetCreateGun(mInventory->GetCreateGun());
 
 			if (mDungeonScreen->GetInteracted() == true) {
 				mDungeonScreen->SetInteracted(false);
@@ -61,7 +69,7 @@ void ScreenManager::Update() {
 				mCurrentScreen = Spawn;
 			}
 
-			if (mDungeonScreen->GetPlayerHp() <= 0) {
+			if (mDungeonScreen != nullptr && mDungeonScreen->GetPlayerHp() <= 0) {
 				delete mDungeonScreen;
 				mDungeonScreen = nullptr;
 
@@ -70,6 +78,7 @@ void ScreenManager::Update() {
 			}
 		}
 		break;
+
 	case Death:
 		mInventory->SetCanOpen(false);
 		CreateDeathScreen();
@@ -91,12 +100,14 @@ void ScreenManager::Update() {
 	if (mInventory->GetCanOpen() == true) {
 		mInventory->Update();
 	}
-	
+
 	if (mDungeonScreen != nullptr) {
 		if (mDungeonScreen->GetAddItem() == true) {
 			mInventory->AddItem(mDungeonScreen->AddItemToInventory());
 		}
 	}
+
+	Mix_Volume(-1, 10);
 }
 
 void ScreenManager::Render() { 
@@ -107,13 +118,13 @@ void ScreenManager::Render() {
 		mStartScreen->Render();
 		break;
 	case Spawn:
-		
+
 		if (mSpawnScreen != nullptr) {
 			mSpawnScreen->Render();
 		}
 		break;
 	case DungeonScreen:
-		
+
 		if (mDungeonScreen != nullptr) {
 			mDungeonScreen->Render();
 		}
@@ -127,17 +138,25 @@ void ScreenManager::Render() {
 	}
 
 	if (mInventory->GetCanOpen() == true) {
+
 		if (mInventory->GetOpen() == true) {
 			mInventory->Render();
 			if (mDungeonScreen != nullptr) {
-				mDungeonScreen->SetMenuOpen(true);
+				mDungeonScreen->SetMenuOpen(true);		
+			}
+			if (mSpawnScreen != nullptr) {
+				mSpawnScreen->SetMenuOpen(true);
 			}
 		}
 		else {
 			if (mDungeonScreen != nullptr) {
-				mDungeonScreen->SetMenuOpen(false);
+				mDungeonScreen->SetMenuOpen(false);		
+			}
+			if (mSpawnScreen != nullptr) {
+				mSpawnScreen->SetMenuOpen(false);
 			}
 		}
+		mCursor->Render();
 	}
 	
 }
@@ -153,10 +172,17 @@ ScreenManager::ScreenManager() {
 	mInventory->Active(true);
 	mInventory->SetTag("null");
 
+	mCursor = new Cursor();
+	mCursor->Parent(this);
+	mCursor->Position();
+	mCursor->Active(true);
+	mCursor->SetTag("cursor");
+
 	mCurrentScreen = Start;
 
 	mPlayScreenLock = false;
 	mSpawnScreenLock = false;
+
 }
 
 ScreenManager::~ScreenManager() {
@@ -176,6 +202,9 @@ ScreenManager::~ScreenManager() {
 
 	delete mInventory;
 	mInventory = nullptr;
+
+	delete mCursor;
+	mCursor = nullptr;
 }
 
 void ScreenManager::CreatePlayScreen() {

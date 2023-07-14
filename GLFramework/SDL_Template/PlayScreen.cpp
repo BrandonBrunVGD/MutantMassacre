@@ -19,17 +19,10 @@ PlayScreen::PlayScreen() {
 	mCursor->Active(true);
 	mCursor->SetTag("cursor");
 
-	/*delete mInventory;
-	mInventory = new Inventory();
-	mInventory->Parent(this);
-	mInventory->Position();
-	mInventory->Active(true);
-	mInventory->SetTag("null");*/
-
 	delete mGun;
 	mGun = new Gun();
 	mGun->Parent(mPlayer);
-	mGun->Position(Vec2_Zero);
+	mGun->Position(Vector2(80, 0));
 	mGun->Active(true);
 	mGun->SetTag("player gun");
 
@@ -53,6 +46,12 @@ PlayScreen::PlayScreen() {
 	mGUI->Position(Graphics::SCREEN_WIDTH * 0.9f, Graphics::SCREEN_HEIGHT * 0.9f);
 	mGUI->Active(true);
 
+	delete mGUISPACE;
+	mGUISPACE = new GUIManager("SPACE");
+	mGUISPACE->Parent(this);
+	mGUISPACE->Position(Graphics::SCREEN_WIDTH * 0.7f, Graphics::SCREEN_HEIGHT * 0.9f);
+	mGUISPACE->Active(true);
+
 	delete mDoor;
 	mDoor = new Door();
 	mDoor->Parent(this);
@@ -63,6 +62,20 @@ PlayScreen::PlayScreen() {
 	mRuinsBackground->Parent(this);
 	mRuinsBackground->Position(Graphics::SCREEN_WIDTH * 0.5f, Graphics::SCREEN_HEIGHT * 0.5f);
 	mRuinsBackground->Active(true);
+
+	for (int i = 0; i < MAX_HP_GONE; ++i) {
+		GUIManager* heartGone = new GUIManager("HEART_GONE");
+		heartGone->Position(Vector2(1175 + 75 * i, 75));
+		heartGone->SetTag("heartGone");
+		mHeartsGone.push_back(heartGone);
+	}
+
+	for (int i = 0; i < MAX_HP; ++i) {
+		GUIManager* heart = new GUIManager("HEART");
+		heart->Position(Vector2(1175 +75*i, 75));
+		heart->SetTag("heart");
+		mHearts.push_back(heart);
+	}
 
 	mSpawnCrabShell = false;
 	mSpawnItemLock = false;
@@ -83,9 +96,6 @@ PlayScreen::~PlayScreen() {
 	delete mCursor;
 	mCursor = nullptr;
 
-	//delete mInventory;
-	//mInventory = nullptr;
-
 	delete mGun;
 	mGun = nullptr;
 
@@ -98,15 +108,29 @@ PlayScreen::~PlayScreen() {
 	delete mGUI;
 	mGUI = nullptr;
 
+	delete mGUISPACE;
+	mGUISPACE = nullptr;
+
 	delete mRuinsBackground;
 	mRuinsBackground = nullptr;
 
 	delete mDoor;
 	mDoor = nullptr;
+
+	for (auto b : mHearts) {
+		delete b;
+	}
+
+	for (auto b : mHeartsGone) {
+		delete b;
+	}
+
 }
 
 void PlayScreen::Update() {
 	
+	mPlayerHp = mPlayer->GetHp();
+
 	mItemToBeAdded = "null";
 
 	if (mTarantuCrab != nullptr) {
@@ -121,20 +145,28 @@ void PlayScreen::Update() {
 	
 	mRuinsBackground->Update();
 	mGUI->Update();
-	mPlayer->Update();	
+	mGUISPACE->Update();
+	mPlayer->Update();
+
+	if (mPlayer->WasHit() == true) {
+		//mDelHearts.push_back(mHearts[mPlayer->GetHp() -1]);
+		mHearts.erase(mHearts.begin());
+
+		std::cout << "HEART DELETED" << std::endl;
+		mPlayer->SetWasHit(false);
+	}
+
 	mCursor->Update();
-	//mInventory->Update();
 	mGun->Update();
 	mCrystal->Update();
-	
 	mDoor->Update();
+
 	if (mDoor->GetInteracted() == true) { mInteracted = true; mDoor->SetInteracted(false); }
 
 	for (auto it = mDroppedItems.begin(); it != mDroppedItems.end(); ) {
 		(*it)->Update();
 
 		if ((*it)->GetGiveItem() == true) {
-			//mInventory->AddItem((*it)->GetTag());
 			mItemToBeAdded = (*it)->GetTag();
 			mAddItem = true;
 			(*it)->SetGiveItem(false);
@@ -152,7 +184,6 @@ void PlayScreen::Update() {
 	MenuOpen();
 
 	if (mCrystal->GetGiveItem() == true) { 
-		//mInventory->AddItem(mCrystal->GetTag()); 
 		mItemToBeAdded = mCrystal->GetTag();
 		mAddItem = true;
 		mCrystal->SetGiveItem(false);
@@ -162,7 +193,6 @@ void PlayScreen::Update() {
 
 	if (!mSpawnItemLock) {
 		if (mTarantuCrab == nullptr) {
-			//mSpawnCrabShell = true; 
 			SpawnDroppedItem();
 			mSpawnItemLock = true;
 		}
@@ -172,6 +202,20 @@ void PlayScreen::Update() {
 		delete b;
 	}
 	mDelDroppedItems.clear();
+
+	for (auto b : mHearts) {
+		b->Update();
+	}
+	
+	for (auto b : mHeartsGone) {
+		b->Update();
+	}
+
+	for (auto b : mDelHearts) {
+		delete b;
+	}
+
+	mDelHearts.clear();
 }
 
 void PlayScreen::Render() {
@@ -189,14 +233,21 @@ void PlayScreen::Render() {
 		}
 		
 	}
-
+	
 	mPlayer->Render();
 	mGun->Render();
-	//mInventory->Render();
 	mCursor->Render();
-
+	mGUISPACE->Render();
 	if (mCrystal->GetRenderGUI() == true) { 
 		mGUI->Render();
+	}
+
+	for (auto b : mHeartsGone) {
+		b->Render();
+	}
+
+	for (auto b : mHearts) {
+		b->Render();
 	}
 
 }

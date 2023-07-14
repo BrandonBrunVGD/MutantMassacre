@@ -39,6 +39,7 @@ void ScreenManager::Update() {
 				mSpawnScreen->SetInteracted(false);
 				delete mSpawnScreen;
 				mSpawnScreen = nullptr;
+
 				mPlayScreenLock = false;
 				mCurrentScreen = DungeonScreen;
 			}
@@ -55,9 +56,34 @@ void ScreenManager::Update() {
 				mDungeonScreen->SetInteracted(false);
 				delete mDungeonScreen;
 				mDungeonScreen = nullptr;
+
 				mSpawnScreenLock = false;
 				mCurrentScreen = Spawn;
 			}
+
+			if (mDungeonScreen->GetPlayerHp() <= 0) {
+				delete mDungeonScreen;
+				mDungeonScreen = nullptr;
+
+				mDeathScreenLock = false;
+				mCurrentScreen = Death;
+			}
+		}
+		break;
+	case Death:
+		mInventory->SetCanOpen(false);
+		CreateDeathScreen();
+
+		if (mDeathScreen != nullptr) {
+			mDeathScreen->Update();
+
+			
+				//delete mDeathScreen;
+				//mDeathScreen = nullptr;
+
+				//mSpawnScreenLock = false;
+				//mCurrentScreen = Spawn;
+			
 		}
 		break;
 	}
@@ -90,6 +116,12 @@ void ScreenManager::Render() {
 		
 		if (mDungeonScreen != nullptr) {
 			mDungeonScreen->Render();
+		}
+		break;
+	case Death:
+
+		if (mDeathScreen != nullptr) {
+			mDeathScreen->Render();
 		}
 		break;
 	}
@@ -139,6 +171,9 @@ ScreenManager::~ScreenManager() {
 	delete mDungeonScreen;
 	mDungeonScreen = nullptr;
 
+	delete mDeathScreen;
+	mDeathScreen = nullptr;
+
 	delete mInventory;
 	mInventory = nullptr;
 }
@@ -154,5 +189,12 @@ void ScreenManager::CreateSpawnScreen() {
 	if (!mSpawnScreenLock) {
 		mSpawnScreen = new SpawnScreen();
 		mSpawnScreenLock = true;
+	}
+}
+
+void ScreenManager::CreateDeathScreen() {
+	if (!mDeathScreenLock) {
+		mDeathScreen = new DeathScreen();
+		mDeathScreenLock = true;
 	}
 }

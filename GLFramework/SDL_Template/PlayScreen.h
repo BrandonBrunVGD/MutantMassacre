@@ -24,6 +24,7 @@ private:
 	WorldItem* mCrystal;
 	WorldItem* mDroppedCrabShell;
 	GUIManager* mGUI;
+	GUIManager* mGUISPACE;
 	Door* mDoor;
 
 	//Background Textures
@@ -37,12 +38,21 @@ private:
 		std::string mItemToBeAdded;
 		bool mMenuOpened;
 
+	int mPlayerHp;
+
 	static const int MAX_ENEMIES = 10;
 	Enemy* mEnemies[MAX_ENEMIES];
 
 	static const int MAX_DROPPED_ITEMS = 10;
 	std::vector<WorldItem*> mDroppedItems;
 	std::vector<WorldItem*> mDelDroppedItems;
+
+	static const int MAX_HP = 10;
+	std::vector<GUIManager*> mHearts;
+	std::vector<GUIManager*> mDelHearts;
+
+	static const int MAX_HP_GONE = 10;
+	std::vector<GUIManager*> mHeartsGone;
 
 public:
 	PlayScreen();
@@ -61,6 +71,8 @@ public:
 		std::string AddItemToInventory() { return mItemToBeAdded; mAddItem = true; }
 		bool GetAddItem() { return mAddItem; mAddItem = false; }
 		void SetMenuOpen(bool opened) { mMenuOpened = opened; }
+	
+	bool GetPlayerHp() { return mPlayerHp; }
 
 	void SpawnDroppedItem();
 };

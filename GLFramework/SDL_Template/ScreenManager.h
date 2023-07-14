@@ -3,13 +3,14 @@
 #include "StartScreen.h"
 #include "PlayScreen.h"
 #include "SpawnScreen.h"
+#include "DeathScreen.h"
 #include "Inventory.h"
 
 class ScreenManager : GameEntity{
 private:
 	static ScreenManager * sInstance;
 
-	enum Screens { Start, Spawn, DungeonScreen };
+	enum Screens { Start, Spawn, DungeonScreen, Death };
 	Screens mCurrentScreen;
 
 	InputManager * mInput;
@@ -17,11 +18,13 @@ private:
 	StartScreen * mStartScreen;
 	SpawnScreen* mSpawnScreen;
 	PlayScreen * mDungeonScreen;
+	DeathScreen* mDeathScreen;
 
 	Inventory* mInventory;
 
 	bool mPlayScreenLock;
 	bool mSpawnScreenLock;
+	bool mDeathScreenLock;
 
 public:
 	static ScreenManager * Instance();
@@ -32,7 +35,8 @@ public:
 
 	void CreatePlayScreen();
 	void CreateSpawnScreen();
-	
+	void CreateDeathScreen();
+
 	//void AddItemToInventory(std::string tag);
 private:
 	ScreenManager();

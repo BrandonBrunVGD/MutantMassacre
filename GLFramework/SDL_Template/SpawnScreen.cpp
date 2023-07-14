@@ -27,17 +27,10 @@ SpawnScreen::SpawnScreen() {
 	mCursor->Active(true);
 	mCursor->SetTag("cursor");
 
-	/*delete mInventory;
-	mInventory = new Inventory();
-	mInventory->Parent(this);
-	mInventory->Position();
-	mInventory->Active(true);
-	mInventory->SetTag("null");*/
-
 	delete mGun;
 	mGun = new Gun();
 	mGun->Parent(mPlayer);
-	mGun->Position(Vec2_Zero);
+	mGun->Position(Vector2(80, 0));
 	mGun->Active(true);
 	mGun->SetTag("player gun");
 
@@ -46,6 +39,12 @@ SpawnScreen::SpawnScreen() {
 	mGUI->Parent(this);
 	mGUI->Position(Graphics::SCREEN_WIDTH * 0.9f, Graphics::SCREEN_HEIGHT * 0.9f);
 	mGUI->Active(true);
+
+	delete mGUISPACE;
+	mGUISPACE = new GUIManager("SPACE");
+	mGUISPACE->Parent(this);
+	mGUISPACE->Position(Graphics::SCREEN_WIDTH * 0.7f, Graphics::SCREEN_HEIGHT * 0.9f);
+	mGUISPACE->Active(true);
 
 	mDoor = new Door();
 	mDoor->Parent(this);
@@ -88,6 +87,9 @@ SpawnScreen::~SpawnScreen() {
 	delete mGUI;
 	mGUI = nullptr;
 
+	delete mGUISPACE;
+	mGUISPACE = nullptr;
+
 	delete mSpawnBackground;
 	mSpawnBackground = nullptr;
 
@@ -129,6 +131,7 @@ void SpawnScreen::Render() {
 	//mInventory->Render();
 	mCursor->Render();
 	if (mDoor->WasHit() == true) { mGUI->Render(); }
+	mGUISPACE->Render();
 }
 
 void SpawnScreen::MenuOpen() {

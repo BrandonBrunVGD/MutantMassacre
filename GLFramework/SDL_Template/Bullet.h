@@ -16,7 +16,8 @@ private:
 	bool mWasHit;
 
 	Texture * mTexture;
-	
+	Texture* mFriendlyTexture;
+
 	float mSpeed;
 
 	Vector2 mSpawn;		

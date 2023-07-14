@@ -6,6 +6,9 @@ class GUIManager : public PhysEntity {
 private:
 
 	Texture* mKey;
+	Texture* mDashUI;
+	Texture* mHeart;
+	Texture* mHeartGone;
 
 	std::string mTexture;
 	bool mVisible;

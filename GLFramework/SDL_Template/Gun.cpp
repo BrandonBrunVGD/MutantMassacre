@@ -201,7 +201,7 @@ void Gun::Update() {
 		if ((*it)->WasHit()) {
 			mDelPBullets.push_back(*it);
 			it = mPBullets.erase(it);
-			std::cout << "bullet deleted" << std::endl;
+			//std::cout << "bullet deleted" << std::endl;
 		}
 		else {
 			++it;
@@ -212,27 +212,27 @@ void Gun::Update() {
 		if ((*it)->WasHit()) {
 			mDelEBullets.push_back(*it);
 			it = mEBullets.erase(it);
-			std::cout << "bullet deleted" << std::endl;
+			//std::cout << "bullet deleted" << std::endl;
 		}
 		else if ((*it)->Position().y < -OFFSCREEN_BUFFER) {
 			mDelEBullets.push_back(*it);
 			it = mEBullets.erase(it);
-			std::cout << "bullet deleted" << std::endl;
+			//std::cout << "bullet deleted" << std::endl;
 		}
 		else if ((*it)->Position().y > 1080 + OFFSCREEN_BUFFER) {
 			mDelEBullets.push_back(*it);
 			it = mEBullets.erase(it);
-			std::cout << "bullet deleted" << std::endl;
+			//std::cout << "bullet deleted" << std::endl;
 		}
 		else if ((*it)->Position().x < -OFFSCREEN_BUFFER) {
 			mDelEBullets.push_back(*it);
 			it = mEBullets.erase(it);
-			std::cout << "bullet deleted" << std::endl;
+			//std::cout << "bullet deleted" << std::endl;
 		}
 		else if ((*it)->Position().x > 1920 + OFFSCREEN_BUFFER) {
 			mDelEBullets.push_back(*it);
 			it = mEBullets.erase(it);
-			std::cout << "bullet deleted" << std::endl;
+			//std::cout << "bullet deleted" << std::endl;
 		}
 		else {
 			++it;

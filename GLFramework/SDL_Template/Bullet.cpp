@@ -13,22 +13,30 @@ Bullet::Bullet(Vector2 spawnpoint, Vector2 target, bool friendly) {
 	mWasHit = false;
 	mFriendly = friendly;
 
+	mFriendlyTexture = new GLTexture("PlayerBullet.png");
+	mFriendlyTexture->Parent(this);
+	mFriendlyTexture->Position(Vec2_Zero);
+	mFriendlyTexture->Scale(Vector2(0.2f, 0.2f));
+	mSpeed = 500;
+
 	mTexture = new GLTexture("Bullet.png");
 	mTexture->Parent(this);
 	mTexture->Position(Vec2_Zero);
-	mTexture->Scale(Vector2(0.1f, 0.1f));
+	mTexture->Scale(Vector2(0.2f, 0.2f));
 	mSpeed = 500;
 
 	//AddCollider(new BoxCollider(mTexture->ScaledDimensions()));
 	AddCollider(new CircleCollider(mTexture->ScaledDimensions().y));
 
 	if (friendly) {
+
 		mId = PhysicsManager::Instance()->RegisterEntity(this, PhysicsManager::CollisionLayers::FriendlyProjectiles);
 		
 		mSpawn = spawnpoint;
 		mTarget = target;
 	}
 	else {
+
 		mId = PhysicsManager::Instance()->RegisterEntity(this, PhysicsManager::CollisionLayers::Hostile);
 		
 		mSpawn = spawnpoint;
@@ -47,16 +55,19 @@ Bullet::~Bullet() {
 
 	delete mTexture;
 	mTexture = nullptr;
+
+	delete mFriendlyTexture;
+	mFriendlyTexture = nullptr;
 }
 
 void Bullet::Hit(PhysEntity * other) {
 	if (mTag == "pBullet" && other->GetTag() == "enemy") {
 		mWasHit = true;
-		std::cout << "hit" << std::endl;
+		//std::cout << "hit" << std::endl;
 	}
 	else if (mTag == "eBullet" && other->GetTag() == "player") {
 		mWasHit = true;
-		std::cout << "hit" << std::endl;
+		//std::cout << "hit" << std::endl;
 	}
 	
 }
@@ -75,7 +86,11 @@ void Bullet::Update() {
 
 void Bullet::Render() {
 	if (Active()) {
-		mTexture->Render();
+		if (mFriendly) {
+			mFriendlyTexture->Render();
+		}
+		else { mTexture->Render(); }
+		
 		PhysEntity::Render();
 	}
 }

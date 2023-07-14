@@ -5,7 +5,7 @@
 void Player::HandleMovement() {
 	if (mInput->KeyDown(SDL_SCANCODE_D)) {
 		Translate(Vec2_Right * mMoveSpeed * mTimer->DeltaTime(), World);
-		mAnimating = true;
+		//mAnimating = true;
 		mWalkingLeft = false;
 		mWalkingRight = true;
 		if (mInput->KeyPressed(SDL_SCANCODE_SPACE)) {
@@ -14,30 +14,29 @@ void Player::HandleMovement() {
 	}
 	else if (mInput->KeyDown(SDL_SCANCODE_A)) {
 		Translate(-Vec2_Right * mMoveSpeed * mTimer->DeltaTime(), World);
-		mAnimating = true;
+		//mAnimating = true;
 		mWalkingRight = false;
 		mWalkingLeft = true;
 		if (mInput->KeyPressed(SDL_SCANCODE_SPACE)) {
 			Translate(-Vec2_Right * (mMoveSpeed * 20) * mTimer->DeltaTime(), World);
 		}
 	}
-	else { mAnimating = false; mWalkingRight = false; mWalkingLeft = false; }
+	else { mWalkingRight = false; mWalkingLeft = false; }
 
 	if (mInput->KeyDown(SDL_SCANCODE_W)) {
 		Translate(-Vec2_Up * mMoveSpeed * mTimer->DeltaTime(), World);
-		//mAnimating = true;
+		
 		if (mInput->KeyPressed(SDL_SCANCODE_SPACE)) {
 			Translate(-Vec2_Up * (mMoveSpeed * 20) * mTimer->DeltaTime(), World);
 		}
 	}
 	else if (mInput->KeyDown(SDL_SCANCODE_S)) {
 		Translate(Vec2_Up * mMoveSpeed * mTimer->DeltaTime(), World);
-		//mAnimating = true;
+		
 		if (mInput->KeyPressed(SDL_SCANCODE_SPACE)) {
 			Translate(Vec2_Up * (mMoveSpeed * 20) * mTimer->DeltaTime(), World);
 		}
 	}
-	//else { mAnimating = false; }
 
 	//mAnimating = false;
 	//Vector2 pos = Position(Local);
@@ -61,7 +60,7 @@ Player::Player() {
 	mWasHit = false;
 
 	mScore = 0;
-	mHp = 1000;
+	mHp = 10;
 
 	mPlayer = new GLTexture("CharacterWalkAnim.png", 0, 0, 338, 338);
 	mPlayer->Parent(this);
@@ -71,15 +70,17 @@ Player::Player() {
 	mMoveSpeed = 450.0f;
 	mMoveBounds = Vector2(1920, 1080);
 
-	mWalkAnim = new AnimatedGLTexture("CharacterWalkAnim.png", 0, 0, 338, 338, 5, 1.0f, Animation::Layouts::Horizontal);
+	mWalkAnim = new AnimatedGLTexture("CharacterWalkAnim.png", 0, 0, 330, 330, 5, 0.75f, Animation::Layouts::Horizontal);
 	mWalkAnim->Parent(this);
 	mWalkAnim->Position(Vec2_Zero);
 	mWalkAnim->SetWrapMode(Animation::WrapModes::Loop);
+	mWalkAnim->Scale(Vector2(0.50f, 0.50f));
 
-	mWalkAnimLeft = new AnimatedGLTexture("CharacterWalkAnimLeft.png", 0, 0, 338, 338, 5, 1.0f, Animation::Layouts::Horizontal);
+	mWalkAnimLeft = new AnimatedGLTexture("CharacterWalkAnimLeft.png", 0, 0, 330, 330, 5, 0.75f, Animation::Layouts::Horizontal);
 	mWalkAnimLeft->Parent(this);
 	mWalkAnimLeft->Position(Vec2_Zero);
 	mWalkAnimLeft->SetWrapMode(Animation::WrapModes::Loop);
+	mWalkAnimLeft->Scale(Vector2(0.50f, 0.50f));
 
 	AddCollider(new BoxCollider(Vector2(16.0f, 67.0f)));
 
@@ -134,9 +135,10 @@ void Player::Hit(PhysEntity* other) {
 		mWasHit = true;
 	}
 	else if (other->GetTag() == "eBullet") {
-		mHp -= 100;
+		mHp -= 1;
 		mWasHit = true;
 	}
+	std::cout << "WAS HIT" << std::endl;
 }
 
 bool Player::WasHit() {
@@ -144,37 +146,39 @@ bool Player::WasHit() {
 }
 
 void Player::Update() {
-	if (mAnimating) {
+	
 
-		if (mWasHit) {
-			mWasHit = false;
-		}
+		
 
 		mWalkAnim->Update();
 		mWalkAnimLeft->Update();
-		//mAnimating = mWalkAnim->IsAnimating();
-	}
-	else {
+
+		/*if (mWalkingRight) {
+			mAnimating = mWalkAnim->IsAnimating();
+		}
+		else if (mWalkingLeft) {
+			mAnimating = mWalkAnimLeft->IsAnimating();
+		}*/
+	
+
 		if (Active()) {
 			std::cout << mHp << std::endl;
 			HandleMovement();
 		}
-	}
+		
 }
 
 void Player::Render() {
 	if (mVisible) {
-		if (mAnimating) {
-			if (mWalkingRight) {
-				mWalkAnim->Render();
-			}
-			else if (mWalkingLeft) {
-				mWalkAnimLeft->Render();
-			}
+		
+		if (mWalkingRight) {
+			mWalkAnim->Render();
 		}
-		else {
-			mPlayer->Render();
+		else if (mWalkingLeft) {
+			mWalkAnimLeft->Render();
 		}
+		else mPlayer->Render();
+		
 	}
 
 	PhysEntity::Render();

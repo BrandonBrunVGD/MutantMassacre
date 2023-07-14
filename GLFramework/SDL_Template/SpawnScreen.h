@@ -24,6 +24,7 @@ private:
 	Player* mPlayer;
 	Cursor* mCursor;
 	GUIManager* mGUI;
+	GUIManager* mGUISPACE;
 	Door* mDoor;
 	BlackSmith* mBlackSmith;
 

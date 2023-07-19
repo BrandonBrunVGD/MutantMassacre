@@ -142,10 +142,12 @@ bool Player::IgnoreCollisions()
 
 void Player::Hit(PhysEntity* other) {
 	if (other->GetTag() == "enemy") {
+		mAudio->PlaySFX("SFX/Hit.wav");
 		mHp -= 1;		
 		mWasHit = true;
 	}
 	else if (other->GetTag() == "eBullet") {
+		mAudio->PlaySFX("SFX/Hit.wav");
 		mHp -= 1;
 		mWasHit = true;
 	}

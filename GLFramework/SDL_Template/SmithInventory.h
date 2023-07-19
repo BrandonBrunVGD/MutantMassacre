@@ -45,6 +45,7 @@ private:
 	Texture* mX2_2;
 	Texture* mBUYButton;
 	Texture* mBUY;
+	Texture* mBought;
 
 	Vector2 mMoveBounds;
 

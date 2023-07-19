@@ -12,7 +12,7 @@ SmithInventory::SmithInventory() {
 	mWasHit = false;
 
 	mOpen = false;
-	mCanBuy = false;
+	mCanBuy = true;
 
 	mCurrentCrystals = 0;
 	mCurrentShells = 0;
@@ -52,6 +52,11 @@ SmithInventory::SmithInventory() {
 	mBUYButton->Parent(mBackground);
 	mBUYButton->Scale(Vector2(0.4, 0.4));
 	mBUYButton->Position(Vector2(-400, -450));
+
+	mBought = new GLTexture("BoughtUI.png");
+	mBought->Parent(mBackground);
+	mBought->Scale(Vector2(0.4, 0.4));
+	mBought->Position(Vector2(-400, -450));
 
 	mBUY = new GLTexture("BUY", "emulogic.ttf", 32, { 255, 255, 255 });
 	mBUY->Parent(mBUYButton);
@@ -121,15 +126,20 @@ void SmithInventory::Update() {
 			mX2_2->Update();
 			mBUYButton->Update();
 			mBUY->Update();
-				
+			
+			
 			if (mCurrentCrystals == mCrabGunBuyReq1 && mCurrentShells == mCrabGunBuyReq2) {
+				
 				if (mWasHit && mInput->MouseButtonPressed(::InputManager::MouseButton::Left)) {
 					mAddCrabGun = true;
 					mDeleteItems = true;
 					mWasHit = false;
+					mCanBuy = false;
 				}
 				else { mAddCrabGun = false; mDeleteItems = false; }
+				
 			}
+			
 		}
 	}
 }
@@ -144,7 +154,8 @@ void SmithInventory::Render() {
 			mCrabShell->Render();
 			mX2_1->Render();
 			mX2_2->Render();
-			mBUYButton->Render();
+			if (mCanBuy) { mBUYButton->Render(); }
+			else { mBought->Render(); }
 			mBUY->Render();
 		}
 	}

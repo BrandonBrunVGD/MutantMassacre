@@ -20,6 +20,7 @@ void ScreenManager::Update() {
 	switch (mCurrentScreen) {
 	case Start:
 		mInventory->SetCanOpen(false);
+		mSmithInventory->SetCanOpen(false);
 		mStartScreen->Update();
 
 		if (mStartScreen->getMenuSwitch() != 0) {
@@ -33,14 +34,15 @@ void ScreenManager::Update() {
 		mCursor->Update();
 		mCursor->Position(mInput->MousePosition());
 		mInventory->SetCanOpen(true);
+		mSmithInventory->SetCanOpen(true);
 		CreateSpawnScreen();
 
 		if (mSpawnScreen != nullptr) {
 			mSpawnScreen->Update();
 			mSpawnScreen->SetCreateGun(mInventory->GetCreateGun());
 
-			if (mSpawnScreen->GetInteracted() == true) {
-				mSpawnScreen->SetInteracted(false);
+			if (mSpawnScreen->GetDoorInteracted() == true) {
+				mSpawnScreen->SetDoorInteracted(false);
 				delete mSpawnScreen;
 				mSpawnScreen = nullptr;
 
@@ -54,14 +56,15 @@ void ScreenManager::Update() {
 		mCursor->Update();
 		mCursor->Position(mInput->MousePosition());
 		mInventory->SetCanOpen(true);
+		mSmithInventory->SetCanOpen(false);
 		CreatePlayScreen();
 
 		if (mDungeonScreen != nullptr) {
 			mDungeonScreen->Update();
 			mDungeonScreen->SetCreateGun(mInventory->GetCreateGun());
 
-			if (mDungeonScreen->GetInteracted() == true) {
-				mDungeonScreen->SetInteracted(false);
+			if (mDungeonScreen->GetDoorInteracted() == true) {
+				mDungeonScreen->SetDoorInteracted(false);
 				delete mDungeonScreen;
 				mDungeonScreen = nullptr;
 
@@ -81,11 +84,11 @@ void ScreenManager::Update() {
 
 	case Death:
 		mInventory->SetCanOpen(false);
+		mSmithInventory->SetCanOpen(false);
 		CreateDeathScreen();
 
 		if (mDeathScreen != nullptr) {
 			mDeathScreen->Update();
-
 			
 				//delete mDeathScreen;
 				//mDeathScreen = nullptr;
@@ -101,17 +104,34 @@ void ScreenManager::Update() {
 		mInventory->Update();
 	}
 
+	if (mSmithInventory->GetCanOpen() == true) {
+
+		mSmithInventory->Update(); 
+		if (mSpawnScreen != nullptr) {
+			mSmithInventory->SetOpenMenu(mSpawnScreen->GetOpenSmithMenu());
+		}
+	}
+
 	if (mDungeonScreen != nullptr) {
 		if (mDungeonScreen->GetAddItem() == true) {
 			mInventory->AddItem(mDungeonScreen->AddItemToInventory());
 		}
 	}
 
+	mSmithInventory->SetCurrentCrystals(mInventory->GetCrystalShardAmount());
+	mSmithInventory->SetCurrentShells(mInventory->GetCrabShellAmount());
+
+	if (mSmithInventory->GetAddCrabGun() == true) {
+		mInventory->AddItem("crab gun");
+	}
+	if (mSmithInventory->GetDeleteItems() == true) {
+		mInventory->SetDeleteItems(true);
+	}
+	else { mInventory->SetDeleteItems(false); }
 	Mix_Volume(-1, 10);
 }
 
 void ScreenManager::Render() { 
-
 
 	switch (mCurrentScreen) {
 	case Start:
@@ -158,6 +178,23 @@ void ScreenManager::Render() {
 		}
 		mCursor->Render();
 	}
+
+	if (mSmithInventory->GetCanOpen() == true) {
+		if (mSmithInventory->GetOpen() == true) {
+			mSmithInventory->Render();
+
+			if (mSpawnScreen != nullptr) {
+				mSpawnScreen->SetMenuOpen(true);
+			}
+		}
+		else {
+			
+			if (mSpawnScreen != nullptr) {
+				mSpawnScreen->SetMenuOpen(false);
+			}
+		}
+		mCursor->Render();
+	}
 	
 }
 
@@ -165,12 +202,16 @@ ScreenManager::ScreenManager() {
 	mInput = InputManager::Instance();
 
 	mStartScreen = new StartScreen();
-	//mSpawnScreen = new SpawnScreen();
 	
 	mInventory = new Inventory();
 	mInventory->Position();
 	mInventory->Active(true);
 	mInventory->SetTag("null");
+
+	mSmithInventory = new SmithInventory();
+	mSmithInventory->Position();
+	mSmithInventory->Active(true);
+	mSmithInventory->SetTag("null");
 
 	mCursor = new Cursor();
 	mCursor->Parent(this);
@@ -202,6 +243,9 @@ ScreenManager::~ScreenManager() {
 
 	delete mInventory;
 	mInventory = nullptr;
+
+	delete mSmithInventory;
+	mSmithInventory = nullptr;
 
 	delete mCursor;
 	mCursor = nullptr;

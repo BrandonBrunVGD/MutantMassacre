@@ -15,4 +15,3 @@ int main(int argc, char * args[])
 }
 
 //To Do:
-//Switch Inventory Into Screen Manager or Fix Items Not Carrying Over Screens

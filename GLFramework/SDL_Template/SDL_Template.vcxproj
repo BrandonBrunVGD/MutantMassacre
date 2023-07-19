@@ -190,6 +190,7 @@ xcopy "$(ProjectDir)..\Data\*" "$(OutDir)Data\" /y /s</Command>
     <ClCompile Include="Scoreboard.cpp" />
     <ClCompile Include="ScreenManager.cpp" />
     <ClCompile Include="ShaderUtil.cpp" />
+    <ClCompile Include="SmithInventory.cpp" />
     <ClCompile Include="SpawnScreen.cpp" />
     <ClCompile Include="StartScreen.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -233,6 +234,7 @@ xcopy "$(ProjectDir)..\Data\*" "$(OutDir)Data\" /y /s</Command>
     <ClInclude Include="Scoreboard.h" />
     <ClInclude Include="ScreenManager.h" />
     <ClInclude Include="ShaderUtil.h" />
+    <ClInclude Include="SmithInventory.h" />
     <ClInclude Include="SpawnScreen.h" />
     <ClInclude Include="StartScreen.h" />
     <ClInclude Include="Texture.h" />

@@ -19,12 +19,12 @@ private:
 	bool mVisible;
 	bool mAnimating;
 
-	std::string mSomeOtherGun;
-	std::string mSomeGun;
+	std::string mCrabGun;
 	std::string mStarterBlaster;
 	std::string mCurrentTexture;
 
 	Texture* mGun;
+	std::string mBulletTexture;
 
 	bool mCanShoot;
 	float mMoveSpeed;
@@ -33,6 +33,7 @@ private:
 
 	int mEnemyFireTimer;
 	int mShootPatterns; //switch
+	std::string mGunTag;
 
 	static const int MAX_BULLETS = 200;
 	std::vector<Bullet*> mPBullets;
@@ -47,7 +48,7 @@ private:
 	void EnemyFiring();
 
 public:
-	Gun();
+	Gun(std::string tag);
 	~Gun();
 
 	void Visible(bool visible);
@@ -65,5 +66,6 @@ public:
 	void ShootPattern2();
 
 	void SetTargetPos(Vector2 pos);
+	void SetGunTag(std::string tag) { mGunTag = tag; }
 };
 #endif

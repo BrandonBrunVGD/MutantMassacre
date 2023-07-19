@@ -9,6 +9,7 @@ private:
 	Texture* mDashUI;
 	Texture* mHeart;
 	Texture* mHeartGone;
+	Texture* mEHeart;
 
 	std::string mTexture;
 	bool mVisible;

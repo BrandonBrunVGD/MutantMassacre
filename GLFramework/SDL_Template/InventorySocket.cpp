@@ -76,19 +76,13 @@ void InventorySocket::Update() {
 
 void InventorySocket::Render() {
 
-	if (mVisible) {
-		if (mAnimating) {
+	
+	mInventorySocket->Render();
 
-		}
-		else {
-			mInventorySocket->Render();
-
-			if (mSelected == true) {
-				mSelector->Render();
-			}
-		}
+	if (mSelected == true) {
+		mSelector->Render();
 	}
-
+	
 	PhysEntity::Render();
 }
 

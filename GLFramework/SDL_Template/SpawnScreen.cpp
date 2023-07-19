@@ -7,10 +7,11 @@ SpawnScreen::SpawnScreen() {
 	mAudio = AudioManager::Instance();
 	mInput = InputManager::Instance();
 
-	mInteracted = false;
+	mDoorInteracted = false;
 	mAddItem = false;
 	mItemToBeAdded = "null";
 	mMenuOpened = false;
+	mOpenSmithMenu = false;
 
 	mCreateGun = "null";
 	mCreateGunLock = false;
@@ -99,7 +100,9 @@ void SpawnScreen::Update() {
 		MenuOpen();
 	}
 
-	if (mDoor->GetInteracted() == true) { mInteracted = true; mDoor->SetInteracted(false); }
+	if (mDoor->GetInteracted() == true) { mDoorInteracted = true; mDoor->SetInteracted(false); }
+	if (mBlackSmith->WasHit() == true) { mOpenSmithMenu = true; mBlackSmith->SetWasHit(false); }
+	else { mOpenSmithMenu = false; }
 
 	if (mMenuOpened) { mPlayer->SetCanShoot(false); }
 	else { mPlayer->SetCanShoot(true); }
@@ -114,6 +117,7 @@ void SpawnScreen::Render() {
 	if (mGun != nullptr) { mGun->Render(); }
 	
 	if (mDoor->WasHit() == true) { mGUI->Render(); }
+	if (mBlackSmith->WasHit() == true) { mGUI->Render(); }
 	mGUISPACE->Render();
 }
 
@@ -126,15 +130,16 @@ void SpawnScreen::MenuOpen() {
 	}
 }
 
-void SpawnScreen::SetInteracted(bool interacted) {
-	mInteracted = interacted;
+void SpawnScreen::SetDoorInteracted(bool interacted) {
+	mDoorInteracted = interacted;
 }
 
 void SpawnScreen::CreateGun() {
 	if (mCreateGun == "null") { mCreateGunLock = false; }
 	if (!mCreateGunLock) {
-		if (mCreateGun == "starter gun") {
-			mGun = new Gun();
+		
+		if (mCreateGun == "starter gun") { 
+			mGun = new Gun("starter gun");
 			mGun->Parent(mPlayer);
 			mGun->Position(Vector2(80, 0));
 			mGun->Active(true);
@@ -143,6 +148,17 @@ void SpawnScreen::CreateGun() {
 			mCreateGunLock = true;
 			mPlayer->SetCanShoot(true);
 		}
+		else if (mCreateGun == "crab gun") { 
+			mGun = new Gun("crab gun");
+			mGun->Parent(mPlayer);
+			mGun->Position(Vector2(80, 0));
+			mGun->Active(true);
+			mGun->SetTag("player gun");
+			std::cout << "CREATED GUN" << std::endl;
+			mCreateGunLock = true;
+			mPlayer->SetCanShoot(true);
+		}
+		
 		
 	}
 }

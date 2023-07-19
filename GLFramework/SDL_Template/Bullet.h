@@ -19,6 +19,7 @@ private:
 	Texture* mFriendlyTexture;
 
 	float mSpeed;
+	std::string mBulletTag;
 
 	Vector2 mSpawn;		
 	Vector2 mVelocity;
@@ -29,7 +30,7 @@ private:
 	bool IgnoreCollisions() override;
 
 public:
-	Bullet(Vector2 spawnpoint = Vec2_Zero, Vector2 target = Vec2_Zero, bool friendly = true);
+	Bullet(std::string tag, Vector2 spawnpoint = Vec2_Zero, Vector2 target = Vec2_Zero, bool friendly = true);
 	~Bullet();
 
 	// Inherited from PhysEntity

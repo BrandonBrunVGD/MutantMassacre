@@ -5,13 +5,14 @@
 #include "SpawnScreen.h"
 #include "DeathScreen.h"
 #include "Inventory.h"
+#include "SmithInventory.h"
 #include "Cursor.h"
 
 class ScreenManager : GameEntity{
 private:
 	static ScreenManager * sInstance;
 
-	enum Screens { Start, Spawn, DungeonScreen, Death };
+	enum Screens { Start, Spawn, DungeonScreen, Death};
 	Screens mCurrentScreen;
 
 	InputManager * mInput;
@@ -22,6 +23,7 @@ private:
 	DeathScreen* mDeathScreen;
 
 	Inventory* mInventory;
+	SmithInventory* mSmithInventory;
 	Cursor* mCursor;
 
 	bool mPlayScreenLock;
@@ -39,8 +41,6 @@ public:
 	void CreateSpawnScreen();
 	void CreateDeathScreen();
 
-
-	//void AddItemToInventory(std::string tag);
 private:
 	ScreenManager();
 	~ScreenManager();

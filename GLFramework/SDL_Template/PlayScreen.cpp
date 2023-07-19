@@ -52,21 +52,35 @@ PlayScreen::PlayScreen() {
 
 	for (int i = 0; i < MAX_HP_GONE; ++i) {
 		GUIManager* heartGone = new GUIManager("HEART_GONE");
-		heartGone->Position(Vector2(1175 + 75 * i, 75));
+		heartGone->Position(Vector2(750 - 75 * i, 75));
 		heartGone->SetTag("heartGone");
 		mHeartsGone.push_back(heartGone);
 	}
 
 	for (int i = 0; i < MAX_HP; ++i) {
 		GUIManager* heart = new GUIManager("HEART");
-		heart->Position(Vector2(1175 +75*i, 75));
+		heart->Position(Vector2(750 -75*i, 75));
 		heart->SetTag("heart");
 		mHearts.push_back(heart);
 	}
 
+	for (int i = 0; i < MAX_EHP_GONE; ++i) {
+		GUIManager* EheartGone = new GUIManager("HEART_GONE");
+		EheartGone->Position(Vector2(1175 + 75 * i, 75));
+		EheartGone->SetTag("EheartGone");
+		mEHeartsGone.push_back(EheartGone);
+	}
+
+	for (int i = 0; i < MAX_EHP; ++i) {
+		GUIManager* Eheart = new GUIManager("EHEART");
+		Eheart->Position(Vector2(1175 + 75 * i, 75));
+		Eheart->SetTag("Eheart");
+		mEHearts.push_back(Eheart);
+	}
+
 	mSpawnCrabShell = false;
 	mSpawnItemLock = false;
-	mInteracted = false;
+	mDoorInteracted = false;
 	mAddItem = false;
 	mItemToBeAdded = "null";
 
@@ -122,12 +136,29 @@ void PlayScreen::Update() {
 	mItemToBeAdded = "null";
 
 	if (mTarantuCrab != nullptr) {
+		for (auto b : mEHearts) {
+			b->Update();
+		}
+
+		for (auto b : mEHeartsGone) {
+			b->Update();
+		}
+
 		if (mTarantuCrab->GetHp() > 0) {
 			mTarantuCrab->Update();
+
 		}
 		else {
 			delete mTarantuCrab;
 			mTarantuCrab = nullptr;
+
+			for (auto b : mEHearts) {
+				delete b;
+			}
+
+			for (auto b : mEHeartsGone) {
+				delete b;
+			}
 		}
 	}
 
@@ -161,17 +192,26 @@ void PlayScreen::Update() {
 	mPlayer->Update();
 
 	if (mPlayer->WasHit() == true) {
-		//mDelHearts.push_back(mHearts[mPlayer->GetHp() -1]);
 		mHearts.erase(mHearts.begin());
 
 		std::cout << "HEART DELETED" << std::endl;
 		mPlayer->SetWasHit(false);
 	}
 
+	if (mTarantuCrab != nullptr && mTarantuCrab->WasHit() == true) {
+		
+		mEHearts.erase(mEHearts.begin());
+
+		std::cout << "HEART DELETED" << std::endl;
+		mTarantuCrab->SetWasHit(false);
+
+
+	}
+
 	mCrystal->Update();
 	mDoor->Update();
 
-	if (mDoor->GetInteracted() == true) { mInteracted = true; mDoor->SetInteracted(false); }
+	if (mDoor->GetInteracted() == true) { mDoorInteracted = true; mDoor->SetInteracted(false); }
 
 	std::cout << mCreateGun << std::endl;
 	CreateGun();
@@ -201,12 +241,6 @@ void PlayScreen::Update() {
 		b->Update();
 	}
 
-	for (auto b : mDelHearts) {
-		delete b;
-	}
-
-	mDelHearts.clear();
-
 	if (mMenuOpened) { mPlayer->SetCanShoot(false); }
 	else { mPlayer->SetCanShoot(true); }
 }
@@ -215,7 +249,18 @@ void PlayScreen::Render() {
 
 	mRuinsBackground->Render();
 	if (mDoor->WasHit() == true) { mDoor->Render(); mGUI->Render(); }
-	if (mTarantuCrab != nullptr) { mTarantuCrab->Render(); }
+	if (mTarantuCrab != nullptr) {
+		
+		mTarantuCrab->Render(); 
+
+		for (auto b : mEHeartsGone) {
+			b->Render();
+		}
+
+		for (auto b : mEHearts) {
+			b->Render();
+		}
+	}
 	
 	mCrystal->Render();
 
@@ -263,15 +308,16 @@ void PlayScreen::SpawnDroppedItem() {
 	mDroppedItems.push_back(mDroppedCrabShell);
 }
 
-void PlayScreen::SetInteracted(bool interacted) {
-	mInteracted = interacted;
+void PlayScreen::SetDoorInteracted(bool interacted) {
+	mDoorInteracted = interacted;
 }
 
 void PlayScreen::CreateGun() {
 	if (mCreateGun == "null") { mCreateGunLock = false; }
 	if (!mCreateGunLock) {
-		if (mCreateGun == "starter gun") {
-			mGun = new Gun();
+
+		if (mCreateGun == "starter gun") { 
+			mGun = new Gun("starter gun");
 			mGun->Parent(mPlayer);
 			mGun->Position(Vector2(80, 0));
 			mGun->Active(true);
@@ -280,7 +326,17 @@ void PlayScreen::CreateGun() {
 			mCreateGunLock = true;
 			mPlayer->SetCanShoot(true);
 		}
-
+		else if (mCreateGun == "crab gun") { 
+			mGun = new Gun("crab gun");
+			mGun->Parent(mPlayer);
+			mGun->Position(Vector2(80, 0));
+			mGun->Active(true);
+			mGun->SetTag("player gun");
+			std::cout << "CREATED GUN" << std::endl;
+			mCreateGunLock = true;
+			mPlayer->SetCanShoot(true);
+		}
+		
 	}
 }
 void PlayScreen::DelGun() {

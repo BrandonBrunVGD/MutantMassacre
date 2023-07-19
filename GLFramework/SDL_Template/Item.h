@@ -33,6 +33,7 @@ private:
 	Texture* mStarterGun;
 	Texture* mRareRing;
 	Texture* mIronHelm;
+	Texture* mCrabGun;
 
 	float mMoveSpeed;
 	Vector2 mMoveBounds;

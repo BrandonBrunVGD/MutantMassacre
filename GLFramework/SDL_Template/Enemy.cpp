@@ -13,6 +13,7 @@ Enemy::Enemy() {
 	mEnragedState = false;
 	mEnragedMods = false;
 	mSleepState = true;
+	mWasHit = false;
 
 	mTexture = new GLTexture("Tarantu-Crab.png");
 	mTexture->Parent(this);
@@ -30,7 +31,7 @@ Enemy::Enemy() {
 	mShadow->Scale(Vector2(0.750f, 0.750f));
 
 	delete mEGun;
-	mEGun = new Gun();
+	mEGun = new Gun("starter gun");
 	mEGun->Parent(this);
 	mEGun->Position(Vec2_Zero);
 	mEGun->Active(true);
@@ -70,12 +71,15 @@ void Enemy::Hit(PhysEntity* other) {
 	if (other->GetTag() == "pBullet") {
 		mHp -= 1;
 		mSleepState = false;
+		mWasHit = true;
 	}
 }
 
 void Enemy::Update() {
 	if (mSleepState == true) { mEGun->CanShoot(false); mSpeed = 0; }
 	else { mEGun->CanShoot(true); mSpeed = 250; }
+
+	//if (mWasHit) { mWasHit = false; }
 
 	mTexture->Update();
 	mEyeLids->Update();

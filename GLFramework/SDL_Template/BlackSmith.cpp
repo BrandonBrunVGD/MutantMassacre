@@ -22,7 +22,7 @@ BlackSmith::BlackSmith() {
 
 	AddCollider(new BoxCollider(Vector2(332 / 2, 307 / 2)));
 
-	mId = PhysicsManager::Instance()->RegisterEntity(this, PhysicsManager::CollisionLayers::Friendly);
+	mId = PhysicsManager::Instance()->RegisterEntity(this, PhysicsManager::CollisionLayers::Hostile);
 
 	Visible(true);
 }
@@ -53,14 +53,15 @@ bool BlackSmith::IgnoreCollisions()
 }
 
 void BlackSmith::Hit(PhysEntity* other) {
-	if (other->GetTag() == "") {
-		
+	if (other->GetTag() == "player") {
+		mWasHit = true;
 	}
 }
 
 void BlackSmith::Update() {
 	mBlackSmith->Update();
 	mAnvil->Update();
+	
 }
 
 void BlackSmith::Render() {

@@ -53,4 +53,5 @@ void GUIManager::InitKey(std::string key) {
 	else if (key == "SPACE") { mTexture = "SpaceGlow.png"; }
 	else if (key == "HEART") { mTexture = "HealthHeart.png"; }
 	else if (key == "HEART_GONE") { mTexture = "HeartGone.png"; }
+	else if (key == "EHEART") { mTexture = "HealthHeartEnemy.png"; }
 }

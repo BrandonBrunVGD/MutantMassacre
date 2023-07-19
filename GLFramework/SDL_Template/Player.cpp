@@ -52,7 +52,7 @@ void Player::HandleMovement() {
 		//pos.x = mMoveBounds.x;
 	//}
 	//else if (pos.x > mMoveBounds.y) {
-		//pos.x = mMoveBounds.y;
+		///pos.x = mMoveBounds.y;
 	//}
 
 	//Position(pos);

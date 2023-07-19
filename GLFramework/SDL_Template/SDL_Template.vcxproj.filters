@@ -168,6 +168,9 @@
     <ClCompile Include="DeathScreen.cpp">
       <Filter>Source Files\Galaga</Filter>
     </ClCompile>
+    <ClCompile Include="SmithInventory.cpp">
+      <Filter>Source Files\Galaga</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEntity.h">
@@ -291,6 +294,9 @@
       <Filter>Header Files\Galaga</Filter>
     </ClInclude>
     <ClInclude Include="DeathScreen.h">
+      <Filter>Header Files\Galaga</Filter>
+    </ClInclude>
+    <ClInclude Include="SmithInventory.h">
       <Filter>Header Files\Galaga</Filter>
     </ClInclude>
   </ItemGroup>

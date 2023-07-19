@@ -31,7 +31,8 @@ private:
 	//Background Textures
 	Texture* mSpawnBackground;
 
-	bool mInteracted;
+	bool mDoorInteracted;
+	bool mOpenSmithMenu;
 
 	static const int MAX_ENEMIES = 10;
 	Enemy* mEnemies[MAX_ENEMIES];
@@ -54,8 +55,10 @@ public:
 	void MenuOpen();
 	void OnItem();
 
-	bool GetInteracted() { return mInteracted; }
-	void SetInteracted(bool interacted);
+	bool GetDoorInteracted() { return mDoorInteracted; }
+	void SetDoorInteracted(bool interacted);
+
+	bool GetOpenSmithMenu() { return mOpenSmithMenu; }
 
 	std::string AddItemToInventory() { return mItemToBeAdded; mAddItem = true; }
 	bool GetAddItem() { return mAddItem; mAddItem = false; }

@@ -6,24 +6,35 @@ bool Bullet::IgnoreCollisions() {
 	return !Active();
 }
 
-Bullet::Bullet(Vector2 spawnpoint, Vector2 target, bool friendly) {
+Bullet::Bullet(std::string tag, Vector2 spawnpoint, Vector2 target, bool friendly) {
 	mTimer = Timer::Instance();
 
 	mVisible = true;
 	mWasHit = false;
 	mFriendly = friendly;
 
-	mFriendlyTexture = new GLTexture("PlayerBullet.png");
-	mFriendlyTexture->Parent(this);
-	mFriendlyTexture->Position(Vec2_Zero);
-	mFriendlyTexture->Scale(Vector2(0.2f, 0.2f));
-	mSpeed = 500;
-
+	mBulletTag = tag;
+	if (mBulletTag == "normal") {
+		mFriendlyTexture = new GLTexture("PlayerBullet.png");
+		mFriendlyTexture->Parent(this);
+		mFriendlyTexture->Position(Vec2_Zero);
+		mFriendlyTexture->Scale(Vector2(0.2f, 0.2f));
+		mSpeed = 500;
+	}
+	else if (mBulletTag == "crab?") {
+		mFriendlyTexture = new GLTexture("CrystalCrab.png");
+		mFriendlyTexture->Parent(this);
+		mFriendlyTexture->Position(Vec2_Zero);
+		mFriendlyTexture->Scale(Vector2(0.1f, 0.1f));
+		mSpeed = 500;
+	}
+	
 	mTexture = new GLTexture("Bullet.png");
 	mTexture->Parent(this);
 	mTexture->Position(Vec2_Zero);
 	mTexture->Scale(Vector2(0.2f, 0.2f));
 	mSpeed = 500;
+	
 
 	//AddCollider(new BoxCollider(mTexture->ScaledDimensions()));
 	AddCollider(new CircleCollider(mTexture->ScaledDimensions().y));

@@ -49,7 +49,7 @@ public:
 	void SetEquipeSocket(bool equipe);
 	void SetFull(bool full);
 
-	bool GetSocketTag() { return mSocketTag; }
+	int GetSocketTag() { return mSocketTag; }
 	bool GetEquipeSocket() { return mEquipeSocket; }
 	bool GetSelected() { return mSelected; }
 	bool GetFull() { return mFull; }

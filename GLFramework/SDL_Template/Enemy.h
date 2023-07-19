@@ -21,6 +21,7 @@ private:
 	bool mAnimating;
 	int mHp;
 	int mMaxHp;
+	bool mWasHit;
 
 	float mSpeed;
 	int mMoveSwitch;
@@ -40,6 +41,9 @@ public:
 
 	// Inherited from PhysEntity
 	virtual void Hit(PhysEntity * other) override;
+
+	bool WasHit() { return mWasHit; }
+	void SetWasHit(bool hit) { mWasHit = hit; }
 
 	void Update() override;
 	void Render() override;

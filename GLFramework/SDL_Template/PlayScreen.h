@@ -31,7 +31,7 @@ private:
 
 	bool mSpawnCrabShell;
 	bool mSpawnItemLock;
-	bool mInteracted;
+	bool mDoorInteracted;
 	//inventory
 		bool mAddItem;
 		std::string mItemToBeAdded;
@@ -50,12 +50,18 @@ private:
 	std::vector<WorldItem*> mDroppedItems;
 	std::vector<WorldItem*> mDelDroppedItems;
 
+
 	static const int MAX_HP = 10;
 	std::vector<GUIManager*> mHearts;
-	std::vector<GUIManager*> mDelHearts;
 
 	static const int MAX_HP_GONE = 10;
 	std::vector<GUIManager*> mHeartsGone;
+
+	static const int MAX_EHP = 10;
+	std::vector<GUIManager*> mEHearts;
+
+	static const int MAX_EHP_GONE = 10;
+	std::vector<GUIManager*> mEHeartsGone;
 
 public:
 	PlayScreen();
@@ -67,8 +73,8 @@ public:
 	void MenuOpen();
 	void OnItem();
 
-	bool GetInteracted() { return mInteracted; }
-	void SetInteracted(bool interacted);
+	bool GetDoorInteracted() { return mDoorInteracted; }
+	void SetDoorInteracted(bool interacted);
 
 	//Inventory
 		std::string AddItemToInventory() { return mItemToBeAdded; mAddItem = true; }

@@ -16,9 +16,10 @@ private:
 	InputManager* mInput;
 	AudioManager* mAudio;
 	
-	Item* mLegendaryGun;
+	Item* mRareGun;
 	Item* mRareArti;
 	Item* mEpicArti;
+	Item* mCrabGun;
 
 	Item* mCrystalShard;
 	Item* mCrabShell;
@@ -34,7 +35,14 @@ private:
 	int mSelectedEquipeSocket;
 	bool mMove;
 
+	int mCrystalShardAmount;
+	int mCrabShellAmount;
+
+	bool mDeleteItems;
 	int mInventorySpace;
+
+	int mDelCrystals;
+	int mDelShells;
 
 	int mSocketOffset;
 	int mEmptySocket;
@@ -87,6 +95,10 @@ public:
 	void InventorySocketInit();
 	void EquipedSocketInit();
 
+	int GetCrystalShardAmount() { return mCrystalShardAmount; }
+	int GetCrabShellAmount() { return mCrabShellAmount; }
+
+	void SetDeleteItems(bool del) { mDeleteItems = del; }
 	std::string GetCreateGun() { return mCreateGun; }
 
 	std::vector<Item*> mInventoryVec;

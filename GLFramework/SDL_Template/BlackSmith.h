@@ -16,8 +16,10 @@ private:
 	Texture* mBlackSmith;
 	Texture* mAnvil;
 
+	bool mWasHit;
 	bool mVisible;
 	bool mAnimating;
+	bool mInteracted;
 
 private:
 
@@ -35,7 +37,11 @@ public:
 	void Render() override;
 
 	void Hit(PhysEntity* other) override;
+	bool WasHit() { return mWasHit; }
+	void SetWasHit(bool hit) { mWasHit = hit; }
 
+	bool GetInteracted() { return mInteracted; }
+	void SetInteracted(bool interacted) { mInteracted = interacted; }
 
 };
 #endif

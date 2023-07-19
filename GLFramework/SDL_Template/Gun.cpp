@@ -10,7 +10,7 @@ void Gun::HandleFiring() {
 	if (mCanShoot) {
 		if (mTag == "player gun") {
 			if (mInput->MouseButtonPressed(InputManager::MouseButton::Left)) {
-				Bullet* bullet = new Bullet(Position(), mInput->MousePosition(), true);
+				Bullet* bullet = new Bullet(mBulletTexture, Position(), mInput->MousePosition(), true);
 				bullet->SetTag("pBullet");
 				mPBullets.push_back(bullet);
 
@@ -40,81 +40,81 @@ void Gun::EnemyFiring() {
 }
 
 void Gun::ShootPattern1() {
-	Bullet* bullet1_1 = new Bullet(Position(), Vector2(0, 0), false);
+	Bullet* bullet1_1 = new Bullet(mBulletTexture, Position(), Vector2(0, 0), false);
 	bullet1_1->SetTag("eBullet");
 	mEBullets.push_back(bullet1_1);
 
-	Bullet* bullet1_2 = new Bullet(Position(), Vector2(1920/2, 0), false);
+	Bullet* bullet1_2 = new Bullet(mBulletTexture, Position(), Vector2(1920/2, 0), false);
 	bullet1_2->SetTag("eBullet");
 	mEBullets.push_back(bullet1_2);
 
-	Bullet* bullet1_3 = new Bullet(Position(), Vector2(1920, 0), false);
+	Bullet* bullet1_3 = new Bullet(mBulletTexture, Position(), Vector2(1920, 0), false);
 	bullet1_3->SetTag("eBullet");
 	mEBullets.push_back(bullet1_3);
 
-	Bullet* bullet1_4 = new Bullet(Position(), Vector2(0, 1080/2), false);
+	Bullet* bullet1_4 = new Bullet(mBulletTexture, Position(), Vector2(0, 1080/2), false);
 	bullet1_4->SetTag("eBullet");
 	mEBullets.push_back(bullet1_4);
 
-	Bullet* bullet1_5 = new Bullet(Position(), Vector2(1920, 1080/2), false);
+	Bullet* bullet1_5 = new Bullet(mBulletTexture, Position(), Vector2(1920, 1080/2), false);
 	bullet1_5->SetTag("eBullet");
 	mEBullets.push_back(bullet1_5);
 
-	Bullet* bullet1_6 = new Bullet(Position(), Vector2(0, 1080), false);
+	Bullet* bullet1_6 = new Bullet(mBulletTexture, Position(), Vector2(0, 1080), false);
 	bullet1_6->SetTag("eBullet");
 	mEBullets.push_back(bullet1_6);
 
-	Bullet* bullet1_7 = new Bullet(Position(), Vector2(1920/2, 1080), false);
+	Bullet* bullet1_7 = new Bullet(mBulletTexture, Position(), Vector2(1920/2, 1080), false);
 	bullet1_7->SetTag("eBullet");
 	mEBullets.push_back(bullet1_7);
 
-	Bullet* bullet1_8 = new Bullet(Position(), Vector2(1920, 1080), false);
+	Bullet* bullet1_8 = new Bullet(mBulletTexture, Position(), Vector2(1920, 1080), false);
 	bullet1_8->SetTag("eBullet");
 	mEBullets.push_back(bullet1_8);
 }
 void Gun::ShootPattern2() {
-	Bullet* bullet2_1 = new Bullet(Position(), Vector2(480, 0), false);
+	Bullet* bullet2_1 = new Bullet(mBulletTexture, Position(), Vector2(480, 0), false);
 	bullet2_1->SetTag("eBullet");
 	mEBullets.push_back(bullet2_1);
 
-	Bullet* bullet2_2 = new Bullet(Position(), Vector2(1440, 0), false);
+	Bullet* bullet2_2 = new Bullet(mBulletTexture, Position(), Vector2(1440, 0), false);
 	bullet2_2->SetTag("eBullet");
 	mEBullets.push_back(bullet2_2);
 
-	Bullet* bullet2_3 = new Bullet(Position(), Vector2(0, 270), false);
+	Bullet* bullet2_3 = new Bullet(mBulletTexture, Position(), Vector2(0, 270), false);
 	bullet2_3->SetTag("eBullet");
 	mEBullets.push_back(bullet2_3);
 
-	Bullet* bullet2_4 = new Bullet(Position(), Vector2(1920, 270), false);
+	Bullet* bullet2_4 = new Bullet(mBulletTexture, Position(), Vector2(1920, 270), false);
 	bullet2_4->SetTag("eBullet");
 	mEBullets.push_back(bullet2_4);
 
-	Bullet* bullet2_5 = new Bullet(Position(), Vector2(0, 810), false);
+	Bullet* bullet2_5 = new Bullet(mBulletTexture, Position(), Vector2(0, 810), false);
 	bullet2_5->SetTag("eBullet");
 	mEBullets.push_back(bullet2_5);
 
-	Bullet* bullet2_6 = new Bullet(Position(), Vector2(1920, 810), false);
+	Bullet* bullet2_6 = new Bullet(mBulletTexture, Position(), Vector2(1920, 810), false);
 	bullet2_6->SetTag("eBullet");
 	mEBullets.push_back(bullet2_6);
 
-	Bullet* bullet2_7 = new Bullet(Position(), Vector2(480, 1080), false);
+	Bullet* bullet2_7 = new Bullet(mBulletTexture, Position(), Vector2(480, 1080), false);
 	bullet2_7->SetTag("eBullet");
 	mEBullets.push_back(bullet2_7);
 
-	Bullet* bullet2_8 = new Bullet(Position(), Vector2(1440, 1080), false);
+	Bullet* bullet2_8 = new Bullet(mBulletTexture, Position(), Vector2(1440, 1080), false);
 	bullet2_8->SetTag("eBullet");
 	mEBullets.push_back(bullet2_8);
 
-	Bullet* bullet2_9 = new Bullet(Position(), Vector2(1920 / 2, 0), false);
+	Bullet* bullet2_9 = new Bullet(mBulletTexture, Position(), Vector2(1920 / 2, 0), false);
 	bullet2_9->SetTag("eBullet");
 	mEBullets.push_back(bullet2_9);
 
-	Bullet* bullet2_10 = new Bullet(Position(), Vector2(1920/2, 1080), false);
+	Bullet* bullet2_10 = new Bullet(mBulletTexture, Position(), Vector2(1920/2, 1080), false);
 	bullet2_10->SetTag("eBullet");
 	mEBullets.push_back(bullet2_10);
 }
 
-Gun::Gun() {
+Gun::Gun(std::string tag) {
 	mTimer = Timer::Instance();
 	mInput = InputManager::Instance();
 	mAudio = AudioManager::Instance();
@@ -123,15 +123,22 @@ Gun::Gun() {
 	mAnimating = false;
 	mCanShoot = true;
 
-	mSomeOtherGun = "SomeOtherTexture.png";
-	mSomeGun = "SomeTexture.png";
-	mStarterBlaster = "StarterBlaster.png";
-	mCurrentTexture = mStarterBlaster;
+	mGunTag = tag;
 
-	mGun = new GLTexture(mCurrentTexture);
-	mGun->Parent(this);
-	mGun->Position(Vec2_Zero);
-	mGun->Scale(Vector2(0.1f, 0.1f));
+	if (mGunTag == "starter gun") {
+		mGun = new GLTexture("StarterBlaster.png");
+		mGun->Parent(this);
+		mGun->Position(Vec2_Zero);
+		mGun->Scale(Vector2(0.1f, 0.1f));
+		mBulletTexture = "normal";
+	}
+	else if (mGunTag == "crab gun") {
+		mGun = new GLTexture("CrabGun.png");
+		mGun->Parent(this);
+		mGun->Position(Vec2_Zero);
+		mGun->Scale(Vector2(0.25f, 0.25f));
+		mBulletTexture = "crab?";
+	}
 
 	mMoveBounds = Vector2(1920, 1080);
 	mTargetPos = Vec2_Zero;
@@ -267,7 +274,9 @@ void Gun::Render() {
 		b->Render();
 	}
 
-	mGun->Render();		
+	if (mGun != nullptr) {
+		mGun->Render();
+	}
 
 	PhysEntity::Render();
 }

@@ -54,6 +54,9 @@ Item::~Item() {
 
 	delete mRareRing;
 	mRareRing = nullptr;
+
+	delete mCrabGun;
+	mCrabGun = nullptr;
 }
 
 void Item::Visible(bool visible) {
@@ -74,6 +77,7 @@ void Item::Hit(PhysEntity* other) {
 		mSelected = true;
 		std::cout << mSelected << std::endl;
 	}
+	else { mSelected = false; }
 }
 
 void Item::Update() {
@@ -94,22 +98,17 @@ void Item::Update() {
 
 void Item::Render() {
 
-	if (mVisible) {
-		if (mAnimating) {
+	if (mTexture == "rare") { mRareTexture->Render(); }
+	else if (mTexture == "epic") { mEpicTexture->Render(); }
+	else if (mTexture == "legendary") { mLegTexture->Render(); }
 
-		}
-		else {
-			if (mTexture == "rare") { mRareTexture->Render(); }
-			else if (mTexture == "epic") { mEpicTexture->Render(); }
-			else if (mTexture == "legendary") { mLegTexture->Render(); }
-
-			if (mItem == "crystal shard") { mCrystalShard->Render(); }
-			else if (mItem == "crab shell") { mCrabShell->Render(); }
-			else if (mItem == "starter gun") { mStarterGun->Render(); }
-			else if (mItem == "rare ring") { mRareRing->Render(); }
-			else if (mItem == "iron helm") { mIronHelm->Render(); }
-		}
-	}
+	if (mItem == "crystal shard") { mCrystalShard->Render(); }
+	else if (mItem == "crab shell") { mCrabShell->Render(); }
+	else if (mItem == "starter gun") { mStarterGun->Render(); }
+	else if (mItem == "rare ring") { mRareRing->Render(); }
+	else if (mItem == "iron helm") { mIronHelm->Render(); }
+	else if (mItem == "crab gun") { mCrabGun->Render(); }
+	
 
 	PhysEntity::Render();
 }
@@ -166,6 +165,12 @@ void Item::ItemTexture() {
 		mIronHelm->Parent(this);
 		mIronHelm->Position(Vec2_Zero);
 		mIronHelm->Scale(Vector2(0.30f, 0.30f));
+	}
+	else if (mItem == "crab gun") {
+		mCrabGun = new GLTexture("CrabGun.png");
+		mCrabGun->Parent(this);
+		mCrabGun->Position(Vec2_Zero);
+		mCrabGun->Scale(Vector2(0.30f, 0.30f));
 	}
 }
 

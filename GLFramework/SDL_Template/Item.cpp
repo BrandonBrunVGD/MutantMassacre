@@ -75,9 +75,8 @@ bool Item::IgnoreCollisions()
 void Item::Hit(PhysEntity* other) {
 	if (other->GetTag() == "cursor") {
 		mSelected = true;
-		std::cout << mSelected << std::endl;
 	}
-	else { mSelected = false; }
+	//else { mSelected = false; }
 }
 
 void Item::Update() {

@@ -84,8 +84,6 @@ SpawnScreen::~SpawnScreen() {
 
 void SpawnScreen::Update() {
 
-	//if (mWasHit) { mWasHit = false; mGUI->Position(mPlayer->Position()); }
-	std::cout << mCreateGun << std::endl;
 	mSpawnBackground->Update();
 	mDoor->Update();
 	mBlackSmith->Update();
@@ -144,7 +142,6 @@ void SpawnScreen::CreateGun() {
 			mGun->Position(Vector2(80, 0));
 			mGun->Active(true);
 			mGun->SetTag("player gun");
-			std::cout << "CREATED GUN" << std::endl;
 			mCreateGunLock = true;
 			mPlayer->SetCanShoot(true);
 		}
@@ -154,12 +151,9 @@ void SpawnScreen::CreateGun() {
 			mGun->Position(Vector2(80, 0));
 			mGun->Active(true);
 			mGun->SetTag("player gun");
-			std::cout << "CREATED GUN" << std::endl;
 			mCreateGunLock = true;
 			mPlayer->SetCanShoot(true);
-		}
-		
-		
+		}	
 	}
 }
 void SpawnScreen::DelGun() {
@@ -168,7 +162,6 @@ void SpawnScreen::DelGun() {
 		if (mCreateGun == "null") {
 			delete mGun;
 			mGun = nullptr;
-			std::cout << "DELETED GUN" << std::endl;
 			mDelGunLock = true;
 			mCreateGunLock = true;
 			mPlayer->SetCanShoot(false);

@@ -12,6 +12,7 @@ private:
 	Timer* mTimer;
 	InputManager* mInput;
 
+	Texture* mYouDied;
 
 public:
 	DeathScreen();

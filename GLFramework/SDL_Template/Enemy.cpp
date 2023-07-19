@@ -31,7 +31,7 @@ Enemy::Enemy() {
 	mShadow->Scale(Vector2(0.750f, 0.750f));
 
 	delete mEGun;
-	mEGun = new Gun("starter gun");
+	mEGun = new Gun("enemy gun");
 	mEGun->Parent(this);
 	mEGun->Position(Vec2_Zero);
 	mEGun->Active(true);
@@ -79,11 +79,8 @@ void Enemy::Update() {
 	if (mSleepState == true) { mEGun->CanShoot(false); mSpeed = 0; }
 	else { mEGun->CanShoot(true); mSpeed = 250; }
 
-	//if (mWasHit) { mWasHit = false; }
-
 	mTexture->Update();
 	mEyeLids->Update();
-	std::cout << std::endl << "Enemy HP: " << mHp << std::endl;
 	mEGun->Update();
 	
 	HandleMovement();
@@ -93,7 +90,7 @@ void Enemy::Update() {
 void Enemy::Render() {
 
 	mShadow->Render();
-	mEGun->Render();
+	if (!mSleepState) { mEGun->Render(); }
 	mTexture->Render();
 	if (mSleepState) { mEyeLids->Render(); }
 	

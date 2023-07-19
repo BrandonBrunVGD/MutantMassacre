@@ -13,6 +13,7 @@ void Gun::HandleFiring() {
 				Bullet* bullet = new Bullet(mBulletTexture, Position(), mInput->MousePosition(), true);
 				bullet->SetTag("pBullet");
 				mPBullets.push_back(bullet);
+				mAudio->PlaySFX("SFX/GunShot.wav");
 
 			}
 		}	
@@ -139,6 +140,13 @@ Gun::Gun(std::string tag) {
 		mGun->Scale(Vector2(0.25f, 0.25f));
 		mBulletTexture = "crab?";
 	}
+	else if (mGunTag == "enemy gun") {
+		mGun = new GLTexture("StarterBlaster.png");
+		mGun->Parent(this);
+		mGun->Position(Vec2_Zero);
+		mGun->Scale(Vector2(0.25f, 0.25f));
+		mBulletTexture = "enemy";
+	}
 
 	mMoveBounds = Vector2(1920, 1080);
 	mTargetPos = Vec2_Zero;
@@ -208,7 +216,6 @@ void Gun::Update() {
 		if ((*it)->WasHit()) {
 			mDelPBullets.push_back(*it);
 			it = mPBullets.erase(it);
-			//std::cout << "bullet deleted" << std::endl;
 		}
 		else {
 			++it;
@@ -219,27 +226,22 @@ void Gun::Update() {
 		if ((*it)->WasHit()) {
 			mDelEBullets.push_back(*it);
 			it = mEBullets.erase(it);
-			//std::cout << "bullet deleted" << std::endl;
 		}
 		else if ((*it)->Position().y < -OFFSCREEN_BUFFER) {
 			mDelEBullets.push_back(*it);
 			it = mEBullets.erase(it);
-			//std::cout << "bullet deleted" << std::endl;
 		}
 		else if ((*it)->Position().y > 1080 + OFFSCREEN_BUFFER) {
 			mDelEBullets.push_back(*it);
 			it = mEBullets.erase(it);
-			//std::cout << "bullet deleted" << std::endl;
 		}
 		else if ((*it)->Position().x < -OFFSCREEN_BUFFER) {
 			mDelEBullets.push_back(*it);
 			it = mEBullets.erase(it);
-			//std::cout << "bullet deleted" << std::endl;
 		}
 		else if ((*it)->Position().x > 1920 + OFFSCREEN_BUFFER) {
 			mDelEBullets.push_back(*it);
 			it = mEBullets.erase(it);
-			//std::cout << "bullet deleted" << std::endl;
 		}
 		else {
 			++it;
@@ -258,11 +260,7 @@ void Gun::Update() {
 
 	Vector2 pos = Position(Local);
 
-	Position(pos);
-
-	//Vector2 pos = Position();
-
-	
+	Position(pos);	
 }
 
 void Gun::Render() {

@@ -82,8 +82,6 @@ public:
 	bool GetOpen() { return mOpen; }
 	void SetOnItem(bool item) { mOnItem = item; }
 
-	void SetGiveItem(bool give);
-
 	void Equipe();
 	void ApplyEquipe();
 	void UnEquipe();

@@ -36,19 +36,13 @@ Inventory::Inventory() {
 	InventorySocketInit();
 	EquipedSocketInit();
 
+	
 	CreateItem(mRareGun, "rare", "Gun", "starter gun");
 	CreateItem(mRareArti, "rare", "Arti", "rare ring");
 	CreateItem(mEpicArti, "epic", "Helm", "iron helm");
 	//CreateItem(mCrabGun, "legendary", "Gun", "crab gun");
 
-	mMoveBounds = Vector2(1920, 1080);
-
-	/*if (mOpen) {
-		AddCollider(new BoxCollider(Vector2(1500.0f, 1080)), Vector2(0.0f, 1080 / 2));
-		AddCollider(new BoxCollider(Vector2(540.0f, 1080)), Vector2(1920.0f, 1080 / 2));
-
-		mId = PhysicsManager::Instance()->RegisterEntity(this, PhysicsManager::CollisionLayers::Friendly);
-	}*/
+	//mMoveBounds = Vector2(1920, 1080);
 
 	Visible(true);
 }
@@ -141,9 +135,6 @@ void Inventory::Update() {
 	mCrabShellAmount = shellAmount;
 	crystalAmount = 0;
 	shellAmount = 0;
-	//std::cout << mCrystalShardAmount << std::endl;
-	//std::cout << mCrabShellAmount << std::endl;
-
 	
 	if (mOpen) {
 		mBackground->Update();
@@ -187,8 +178,6 @@ void Inventory::Update() {
 				
 			}
 		}
-	
-	std::cout << std::endl << "ITEMS IN INVENTORY: " << mInventorySpace << std::endl << std::endl;
 }
 
 void Inventory::Render() {
@@ -220,7 +209,6 @@ void Inventory::Render() {
 
 void Inventory::Open() {
 	if (mInput->KeyPressed(SDL_SCANCODE_I)) {
-		std::cout << "Opened Inventory" << std::endl;
 		mOpen = true;
 		SetTag("menu");
 		
@@ -253,11 +241,9 @@ void Inventory::Close() {
 void Inventory::Equipe() {
 
 	for (int i = 0; i < mInventoryVec.size(); ++i) {
-		std::cout << "CURRENT SOCKET: " << mInventoryVec[i]->GetLastSocket() << std::endl;
-		std::cout << "SELECTED: " << mInventoryVec[i]->GetSelected() << std::endl;
+		
 		if (mInventoryVec[i]->GetSelected() == true && mInventoryVec[i]->GetItemType() != "Mat") {
 			
-			std::cout << mInventoryVec[i]->GetItemName() << std::endl;
 			if (mInput->MouseButtonPressed(InputManager::MouseButton::Right)) {
 				
 				if (mInventoryVec[i]->GetItemType() == "Gun") {
@@ -269,10 +255,10 @@ void Inventory::Equipe() {
 						mInventoryVec[mInventorySpace]->SetLastPos(mInventoryVec[mInventorySpace]->Position());
 						mInventoryVec[mInventorySpace]->SetEquiped(false);
 						mEquipedGunVec.clear();
-						//mEquipedGunVec.erase(mEquipedGunVec.begin());
 						mEquipedSockets[0]->SetFull(false);
 						mSockets[mEmptySocket]->SetFull(true);
 						mInventoryVec[mInventorySpace]->SetLastSocket(mEmptySocket);
+						mCreateGun = "null";
 					}
 					else {
 						mEquipedGunVec.push_back(mInventoryVec[i]);
@@ -295,20 +281,22 @@ void Inventory::Equipe() {
 						mInventoryVec[mInventorySpace]->Scale(Vector2(0.70f, 0.70f));
 						mInventoryVec[mInventorySpace]->SetLastPos(mInventoryVec[mInventorySpace]->Position());
 						mInventoryVec[mInventorySpace]->SetEquiped(false);
-						mEquipedHelmVec.erase(mEquipedHelmVec.begin());
+						mEquipedHelmVec.clear();
 						mEquipedSockets[1]->SetFull(false);
 						mSockets[mEmptySocket]->SetFull(true);
 						mInventoryVec[mInventorySpace]->SetLastSocket(mEmptySocket);
 					}
-					mEquipedHelmVec.push_back(mInventoryVec[i]);
-					mEquipedHelmVec[0]->Position(mEquipedSockets[1]->Position());
-					mEquipedHelmVec[0]->SetLastPos(mEquipedHelmVec[0]->Position());
-					mEquipedHelmVec[0]->Scale(Vector2(1.0f, 1.0f));
-					mEquipedHelmVec[0]->SetEquiped(true);
-					mEquipedSockets[1]->SetFull(true);
-					mSockets[mInventoryVec[i]->GetLastSocket()]->SetFull(false);
-					mInventoryVec.erase(mInventoryVec.begin() + i);
-					mInventorySpace -= 1;
+					else {
+						mEquipedHelmVec.push_back(mInventoryVec[i]);
+						mEquipedHelmVec[0]->Position(mEquipedSockets[1]->Position());
+						mEquipedHelmVec[0]->SetLastPos(mEquipedHelmVec[0]->Position());
+						mEquipedHelmVec[0]->Scale(Vector2(1.0f, 1.0f));
+						mEquipedHelmVec[0]->SetEquiped(true);
+						mEquipedSockets[1]->SetFull(true);
+						mSockets[mInventoryVec[i]->GetLastSocket()]->SetFull(false);
+						mInventoryVec.erase(mInventoryVec.begin() + i);
+						mInventorySpace -= 1;
+					}
 				}
 				else if (mInventoryVec[i]->GetItemType() == "Chest") {
 					if (mEquipedSockets[2]->GetFull() == true) {
@@ -318,20 +306,22 @@ void Inventory::Equipe() {
 						mInventoryVec[mInventorySpace]->Scale(Vector2(0.70f, 0.70f));
 						mInventoryVec[mInventorySpace]->SetLastPos(mInventoryVec[mInventorySpace]->Position());
 						mInventoryVec[mInventorySpace]->SetEquiped(false);
-						mEquipedChestVec.erase(mEquipedChestVec.begin());
+						mEquipedChestVec.clear();
 						mEquipedSockets[2]->SetFull(false);
 						mSockets[mEmptySocket]->SetFull(true);
 						mInventoryVec[mInventorySpace]->SetLastSocket(mEmptySocket);
 					}
-					mEquipedChestVec.push_back(mInventoryVec[i]);
-					mEquipedChestVec[0]->Position(mEquipedSockets[2]->Position());
-					mEquipedChestVec[0]->SetLastPos(mEquipedChestVec[0]->Position());
-					mEquipedChestVec[0]->Scale(Vector2(1.0f, 1.0f));
-					mEquipedChestVec[0]->SetEquiped(true);
-					mEquipedSockets[2]->SetFull(true);
-					mSockets[mInventoryVec[i]->GetLastSocket()]->SetFull(false);
-					mInventoryVec.erase(mInventoryVec.begin() + i);
-					mInventorySpace -= 1;
+					else {
+						mEquipedChestVec.push_back(mInventoryVec[i]);
+						mEquipedChestVec[0]->Position(mEquipedSockets[2]->Position());
+						mEquipedChestVec[0]->SetLastPos(mEquipedChestVec[0]->Position());
+						mEquipedChestVec[0]->Scale(Vector2(1.0f, 1.0f));
+						mEquipedChestVec[0]->SetEquiped(true);
+						mEquipedSockets[2]->SetFull(true);
+						mSockets[mInventoryVec[i]->GetLastSocket()]->SetFull(false);
+						mInventoryVec.erase(mInventoryVec.begin() + i);
+						mInventorySpace -= 1;
+					}
 				}
 				else if (mInventoryVec[i]->GetItemType() == "Boots") {
 					if (mEquipedSockets[3]->GetFull() == true) {
@@ -341,20 +331,22 @@ void Inventory::Equipe() {
 						mInventoryVec[mInventorySpace]->Scale(Vector2(0.70f, 0.70f));
 						mInventoryVec[mInventorySpace]->SetLastPos(mInventoryVec[mInventorySpace]->Position());
 						mInventoryVec[mInventorySpace]->SetEquiped(false);
-						mEquipedBootsVec.erase(mEquipedBootsVec.begin());
+						mEquipedBootsVec.clear();
 						mEquipedSockets[3]->SetFull(false);
 						mSockets[mEmptySocket]->SetFull(true);
 						mInventoryVec[mInventorySpace]->SetLastSocket(mEmptySocket);
 					}
-					mEquipedBootsVec.push_back(mInventoryVec[i]);
-					mEquipedBootsVec[0]->Position(mEquipedSockets[3]->Position());
-					mEquipedBootsVec[0]->SetLastPos(mEquipedBootsVec[0]->Position());
-					mEquipedBootsVec[0]->Scale(Vector2(1.0f, 1.0f));
-					mEquipedBootsVec[0]->SetEquiped(true);
-					mEquipedSockets[3]->SetFull(true);
-					mSockets[mInventoryVec[i]->GetLastSocket()]->SetFull(false);
-					mInventoryVec.erase(mInventoryVec.begin() + i);
-					mInventorySpace -= 1;
+					else {
+						mEquipedBootsVec.push_back(mInventoryVec[i]);
+						mEquipedBootsVec[0]->Position(mEquipedSockets[3]->Position());
+						mEquipedBootsVec[0]->SetLastPos(mEquipedBootsVec[0]->Position());
+						mEquipedBootsVec[0]->Scale(Vector2(1.0f, 1.0f));
+						mEquipedBootsVec[0]->SetEquiped(true);
+						mEquipedSockets[3]->SetFull(true);
+						mSockets[mInventoryVec[i]->GetLastSocket()]->SetFull(false);
+						mInventoryVec.erase(mInventoryVec.begin() + i);
+						mInventorySpace -= 1;
+					}
 				}
 				else if (mInventoryVec[i]->GetItemType() == "Arti") {
 					if (mEquipedSockets[4]->GetFull() == true) {
@@ -364,20 +356,22 @@ void Inventory::Equipe() {
 						mInventoryVec[mInventorySpace]->Scale(Vector2(0.70f, 0.70f));
 						mInventoryVec[mInventorySpace]->SetLastPos(mInventoryVec[mInventorySpace]->Position());
 						mInventoryVec[mInventorySpace]->SetEquiped(false);
-						mEquipedArtiVec.erase(mEquipedArtiVec.begin());
+						mEquipedArtiVec.clear();
 						mEquipedSockets[4]->SetFull(false);
 						mSockets[mEmptySocket]->SetFull(true);
 						mInventoryVec[mInventorySpace]->SetLastSocket(mEmptySocket);
 					}
-					mEquipedArtiVec.push_back(mInventoryVec[i]);
-					mEquipedArtiVec[0]->Position(mEquipedSockets[4]->Position());
-					mEquipedArtiVec[0]->SetLastPos(mEquipedArtiVec[0]->Position());
-					mEquipedArtiVec[0]->Scale(Vector2(1.0f, 1.0f));
-					mEquipedArtiVec[0]->SetEquiped(true);
-					mEquipedSockets[4]->SetFull(true);
-					mSockets[mInventoryVec[i]->GetLastSocket()]->SetFull(false);
-					mInventoryVec.erase(mInventoryVec.begin() + i);
-					mInventorySpace -= 1;
+					else {
+						mEquipedArtiVec.push_back(mInventoryVec[i]);
+						mEquipedArtiVec[0]->Position(mEquipedSockets[4]->Position());
+						mEquipedArtiVec[0]->SetLastPos(mEquipedArtiVec[0]->Position());
+						mEquipedArtiVec[0]->Scale(Vector2(1.0f, 1.0f));
+						mEquipedArtiVec[0]->SetEquiped(true);
+						mEquipedSockets[4]->SetFull(true);
+						mSockets[mInventoryVec[i]->GetLastSocket()]->SetFull(false);
+						mInventoryVec.erase(mInventoryVec.begin() + i);
+						mInventorySpace -= 1;
+					}
 				}
 				
 				

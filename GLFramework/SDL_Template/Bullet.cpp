@@ -14,6 +14,7 @@ Bullet::Bullet(std::string tag, Vector2 spawnpoint, Vector2 target, bool friendl
 	mFriendly = friendly;
 
 	mBulletTag = tag;
+
 	if (mBulletTag == "normal") {
 		mFriendlyTexture = new GLTexture("PlayerBullet.png");
 		mFriendlyTexture->Parent(this);
@@ -28,16 +29,16 @@ Bullet::Bullet(std::string tag, Vector2 spawnpoint, Vector2 target, bool friendl
 		mFriendlyTexture->Scale(Vector2(0.1f, 0.1f));
 		mSpeed = 500;
 	}
-	
-	mTexture = new GLTexture("Bullet.png");
-	mTexture->Parent(this);
-	mTexture->Position(Vec2_Zero);
-	mTexture->Scale(Vector2(0.2f, 0.2f));
-	mSpeed = 500;
-	
+	if (mBulletTag == "enemy") {
+		mFriendlyTexture = new GLTexture("Bullet.png");
+		mFriendlyTexture->Parent(this);
+		mFriendlyTexture->Position(Vec2_Zero);
+		mFriendlyTexture->Scale(Vector2(0.2f, 0.2f));
+		mSpeed = 500;
+	}
 
 	//AddCollider(new BoxCollider(mTexture->ScaledDimensions()));
-	AddCollider(new CircleCollider(mTexture->ScaledDimensions().y));
+	AddCollider(new CircleCollider(mFriendlyTexture->ScaledDimensions().y));
 
 	if (friendly) {
 
@@ -64,8 +65,8 @@ Bullet::Bullet(std::string tag, Vector2 spawnpoint, Vector2 target, bool friendl
 Bullet::~Bullet() {
 	mTimer = nullptr;
 
-	delete mTexture;
-	mTexture = nullptr;
+	//delete mTexture;
+	//mTexture = nullptr;
 
 	delete mFriendlyTexture;
 	mFriendlyTexture = nullptr;
@@ -97,10 +98,10 @@ void Bullet::Update() {
 
 void Bullet::Render() {
 	if (Active()) {
-		if (mFriendly) {
-			mFriendlyTexture->Render();
-		}
-		else { mTexture->Render(); }
+		
+		mFriendlyTexture->Render();
+		
+		//else { mTexture->Render(); }
 		
 		PhysEntity::Render();
 	}

@@ -19,9 +19,10 @@ StartScreen::StartScreen() {
 
 	mLogo->Position(Graphics::SCREEN_WIDTH * 0.5f, Graphics::SCREEN_HEIGHT * 0.32f);
 
-	mSpaceBar = new GLTexture("Space.png");
+	mSpaceBar = new GLTexture("SpaceGlow.png");
 	mSpaceBar->Parent(this);
 	mSpaceBar->Position(Graphics::SCREEN_WIDTH * 0.5f, Graphics::SCREEN_HEIGHT * 0.75);
+	mSpaceBar->Scale(Vector2(0.5, 0.5));
 
 	//profile 1
 	mProfile1 = new GLTexture("ProfileTexture.png");

@@ -90,8 +90,6 @@ void InventorySocket::Hit(PhysEntity* other) {
 	if (mInventoryOpen == true) {
 		if (other->GetTag() == "cursor") {
 			mSelected = true;
-			std::cout << "Selected" << mSocketTag << std::endl;
-			//std::cout << "Equip Socket " << mEquipeSocket << std::endl;
 		}
 	}
 }

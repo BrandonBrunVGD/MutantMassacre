@@ -126,17 +126,12 @@ void SmithInventory::Update() {
 				if (mWasHit && mInput->MouseButtonPressed(::InputManager::MouseButton::Left)) {
 					mAddCrabGun = true;
 					mDeleteItems = true;
-					std::cout << "BOUGHT BUTTON HIT" << std::endl;
 					mWasHit = false;
 				}
 				else { mAddCrabGun = false; mDeleteItems = false; }
 			}
-			
-			//std::cout << std::endl << mInventorySpace << std::endl << std::endl;
 		}
 	}
-
-	std::cout << "ADDING CRABGUN " << mAddCrabGun << std::endl;
 }
 
 void SmithInventory::Render() {
@@ -161,7 +156,6 @@ void SmithInventory::Open() {
 	if (mOpenMenu) {
 		if (mInput->KeyPressed(SDL_SCANCODE_E)) {
 			mOpen = true;
-			std::cout << "Opened Smith Inventory" << std::endl;
 			SetTag("smith menu");
 		}
 	}
@@ -173,17 +167,13 @@ void SmithInventory::Close() {
 			mOpen = false;
 			IgnoreCollisions();
 			SetTag("null");
-			//mInteracted = false;
 		
 		}
 	}
 }
 
 void SmithInventory::Hit(PhysEntity* other) {
-	if (other->GetTag() == "cursor" ) {	
-		
+	if (other->GetTag() == "cursor" ) {		
 			mWasHit = true;
-		
-	}
-	
+	}	
 }

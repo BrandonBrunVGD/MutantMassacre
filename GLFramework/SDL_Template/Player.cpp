@@ -5,7 +5,6 @@
 void Player::HandleMovement() {
 	if (mInput->KeyDown(SDL_SCANCODE_D)) {
 		Translate(Vec2_Right * mMoveSpeed * mTimer->DeltaTime(), World);
-		//mAnimating = true;
 		mWalkingLeft = false;
 		mWalkingRight = true;
 		if (mInput->KeyPressed(SDL_SCANCODE_SPACE)) {
@@ -14,7 +13,6 @@ void Player::HandleMovement() {
 	}
 	else if (mInput->KeyDown(SDL_SCANCODE_A)) {
 		Translate(-Vec2_Right * mMoveSpeed * mTimer->DeltaTime(), World);
-		//mAnimating = true;
 		mWalkingRight = false;
 		mWalkingLeft = true;
 		if (mInput->KeyPressed(SDL_SCANCODE_SPACE)) {
@@ -40,22 +38,27 @@ void Player::HandleMovement() {
 
 	if (mCanShoot) {		
 		if (mInput->MouseButtonPressed(InputManager::MouseButton::Left)) {
-			mAudio->PlaySFX("SFX/GunShot.wav");
+			
 			
 		}
-		
 	}
 
-	//mAnimating = false;
-	//Vector2 pos = Position(Local);
-	//if (pos.x < mMoveBounds.x) {
-		//pos.x = mMoveBounds.x;
-	//}
-	//else if (pos.x > mMoveBounds.y) {
-		///pos.x = mMoveBounds.y;
-	//}
+	Vector2 pos = Position(Local);
+	if (pos.x - mPlayer->GetWidth() / 2 < 0) {
+		pos.x = 0 + mPlayer->GetWidth() / 2;
+	}
+	else if (pos.x + mPlayer->GetWidth()/2 > mMoveBounds.x) {
+		pos.x = mMoveBounds.x - mPlayer->GetWidth() / 2;
+	}
 
-	//Position(pos);
+	if (pos.y - mPlayer->GetHeight() / 2 < 0) {
+		pos.y = 0 + mPlayer->GetHeight() / 2;
+	}
+	else if (pos.y + mPlayer->GetHeight() / 2 > mMoveBounds.y) {
+		pos.y = mMoveBounds.y - mPlayer->GetHeight() / 2;
+	}
+
+	Position(pos);
 }
 
 Player::Player() {
@@ -146,7 +149,6 @@ void Player::Hit(PhysEntity* other) {
 		mHp -= 1;
 		mWasHit = true;
 	}
-	std::cout << "WAS HIT BY: " << other->GetTag() << std::endl;
 }
 
 bool Player::WasHit() {
@@ -159,7 +161,6 @@ void Player::Update() {
 	mWalkAnimLeft->Update();
 
 	if (Active()) {
-		std::cout << "Player HP: " << mHp << std::endl;
 		HandleMovement();
 	}
 		

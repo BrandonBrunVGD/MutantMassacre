@@ -15,7 +15,7 @@ private:
 	bool mVisible;
 	bool mWasHit;
 
-	Texture * mTexture;
+	//Texture * mTexture;
 	Texture* mFriendlyTexture;
 
 	float mSpeed;
@@ -30,7 +30,7 @@ private:
 	bool IgnoreCollisions() override;
 
 public:
-	Bullet(std::string tag, Vector2 spawnpoint = Vec2_Zero, Vector2 target = Vec2_Zero, bool friendly = true);
+	Bullet(std::string tag = "normal", Vector2 spawnpoint = Vec2_Zero, Vector2 target = Vec2_Zero, bool friendly = true);
 	~Bullet();
 
 	// Inherited from PhysEntity

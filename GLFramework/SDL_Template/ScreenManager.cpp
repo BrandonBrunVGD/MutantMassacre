@@ -30,7 +30,7 @@ void ScreenManager::Update() {
 		}
 		break;
 
-	case Spawn:
+	case Spawn: //SPAWN SCREEN
 		mCursor->Update();
 		mCursor->Position(mInput->MousePosition());
 		mInventory->SetCanOpen(true);
@@ -39,6 +39,7 @@ void ScreenManager::Update() {
 
 		if (mSpawnScreen != nullptr) {
 			mSpawnScreen->Update();
+			//std::cout << mInventory->GetCreateGun() << std::endl;
 			mSpawnScreen->SetCreateGun(mInventory->GetCreateGun());
 
 			if (mSpawnScreen->GetDoorInteracted() == true) {
@@ -52,7 +53,7 @@ void ScreenManager::Update() {
 		}
 		break;
 
-	case DungeonScreen:
+	case DungeonScreen: //PLAY SCREEN
 		mCursor->Update();
 		mCursor->Position(mInput->MousePosition());
 		mInventory->SetCanOpen(true);
@@ -61,7 +62,8 @@ void ScreenManager::Update() {
 
 		if (mDungeonScreen != nullptr) {
 			mDungeonScreen->Update();
-			mDungeonScreen->SetCreateGun(mInventory->GetCreateGun());
+			//std::cout << mInventory->GetCreateGun() << std::endl;
+			mDungeonScreen->SetCreateGun(mInventory->GetCreateGun());		
 
 			if (mDungeonScreen->GetDoorInteracted() == true) {
 				mDungeonScreen->SetDoorInteracted(false);
@@ -90,12 +92,14 @@ void ScreenManager::Update() {
 		if (mDeathScreen != nullptr) {
 			mDeathScreen->Update();
 			
-				//delete mDeathScreen;
-				//mDeathScreen = nullptr;
-
-				//mSpawnScreenLock = false;
-				//mCurrentScreen = Spawn;
 			
+			if (mInput->KeyPressed(SDL_SCANCODE_RETURN)) {
+				delete mDeathScreen;
+				mDeathScreen = nullptr;
+
+				mSpawnScreenLock = false;
+				mCurrentScreen = Spawn;
+			}		
 		}
 		break;
 	}
